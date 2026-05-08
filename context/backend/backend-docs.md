@@ -2,6 +2,23 @@
 
 This document outlines the folder structure, data flow, and core infrastructure for the PERN backend (PostgreSQL, Express, React, Node), utilizing NeonDB and Prisma ORM for the AI healthcare app.
 
+## 🚀 External Tech Stack & Third-Party Services
+A quick-reference guide to all external APIs and services utilized in CareSync:
+
+*   **Database & Storage**
+    *   **NeonDB**: Serverless PostgreSQL (Primary Database).
+    *   **Supabase Storage / Cloudinary**: Secure, HIPAA-compliant storage for audio recordings, avatars, and documents.
+    *   **Redis**: In-memory data structure store backing the BullMQ task queues.
+*   **AI & Intelligence**
+    *   **DeepSeek (V3/R1)**: Primary LLM for clinical reasoning, SOAP note generation, and patient summaries.
+    *   **Google Gemini 1.5 Flash**: Primary multimodal API handling fast, free-tier Speech-to-Text (STT) transcription.
+    *   **GLM-5.1 (Zhipu AI)**: Fallback LLM architecture for extreme reliability.
+    *   **Edge TTS / Google Cloud TTS**: Text-to-Speech engines for generating patient voice instructions.
+*   **Automation & Communication**
+    *   **n8n**: Visual workflow automation engine for event-driven tasks and reminders.
+    *   **Twilio**: Dispatching SMS notifications (e.g., critical alerts, appointment reminders).
+    *   **SendGrid**: Dispatching email notifications (e.g., weekly health summaries).
+
 ## 📂 Folder Structure
 
 ```text
@@ -39,6 +56,7 @@ backend/
 
 ### File Storage Strategy
 * **Audio & Document Storage**: We utilize **Supabase Storage** or **Cloudinary** for highly secure, HIPAA-compliant storage of ambient session recordings. The database only stores the URL (`audioUrl`), not the actual audio blobs.
+* **File Upload Security**: Handled by `multer`. We strictly enforce **file type validation** (e.g., only accepting `audio/mp3`, `audio/wav`, `image/png`) and **file size limits** (e.g., max 25MB). Temp files created locally are immediately deleted (`fs.unlinkSync()`) after successfully streaming to Cloudinary/Supabase to prevent local disk exhaustion and limit malware vectors.
 * **Image Storage**: Cloudinary is used for avatar images and non-sensitive media.
 
 ### Logging System
@@ -60,6 +78,21 @@ All APIs return a unified response structure to ensure the frontend can predicta
 * **Validation Layer**: All incoming data is rigorously validated using **Zod** or **Joi** schemas in the `validations/` folder before reaching controllers.
 * **Environment Config Validation**: We validate `.env` secrets (API keys, DB URLs) at startup to prevent silent failures.
 
+### Environment Variable Schema
+To ensure smooth onboarding, here is the required `.env.example`:
+```env
+DATABASE_URL="postgresql://user:pass@host/db"
+JWT_SECRET="supersecret_access"
+JWT_REFRESH_SECRET="supersecret_refresh"
+GEMINI_API_KEY="AI_KEY"
+SUPABASE_URL="https://..."
+SUPABASE_ANON_KEY="..."
+REDIS_URL="redis://localhost:6379"
+```
+
+### Pagination Strategy
+List endpoints (vitals history, visits, notifications) enforce strict cursor-based or limit/offset pagination to prevent massive payload queries, ensuring APIs remain performant.
+
 ### Database Migration Strategy
 * We rely on **Prisma Migrations** (`npx prisma migrate dev`) for safe schema evolution and version control of database changes over time.
 
@@ -67,10 +100,14 @@ All APIs return a unified response structure to ensure the frontend can predicta
 * All RESTful endpoints are prefixed with `/api/v1/` to ensure future backward compatibility.
 
 ### Background Jobs & Queue Architecture
-* A task queue is used for scheduled reminders, async processing, and handling heavy AI tasks without blocking the main event loop.
+* A robust task queue (**BullMQ backed by Redis**) is used for scheduled reminders, async processing, and handling heavy AI tasks without blocking the main event loop.
 
 ### Security Architecture
-* **Authentication**: Short-lived JWTs combined with HTTP-only, secure cookies for refresh tokens.
+* **Authentication & Session Management**: 
+  - **Token Refresh**: Short-lived access JWTs (15m) are sent to the client. Long-lived Refresh Tokens (7d) are stored in **HTTP-only, secure cookies** and persisted in the `RefreshToken` DB table.
+  - **Token Rotation**: Upon refreshing, the old refresh token is marked as `revoked` in the database, and a new one is issued, mitigating stolen token reuse.
+  - **Logout**: Blacklists the current refresh token by deleting it or marking it as revoked in the database and clearing the HTTP-only cookie.
+* **CORS & HTTP Headers**: `helmet.js` is used to enforce strict security headers. A strict **CORS policy** is configured in `server.js` to only whitelist the designated frontend domain origin (e.g., `https://caresync.app`).
 * **Authorization**: Strict Role-Based Access Control (RBAC) separating PATIENT, DOCTOR, and ADMIN privileges.
 * **Data Privacy**: Passwords hashed with `bcrypt`, sensitive PII encrypted at rest, aligning with HIPAA compliance principles.
 
@@ -231,10 +268,17 @@ model User {
   medicalHistory   String[]  // Array of chronic diseases / past conditions
   insuranceInfo    Json?     // Insurance provider, policy number, etc.
   familyHistory    Json?     // Family medical history
+
+  // Profiles & Security
+  doctorProfile    DoctorProfile?
+  refreshTokens    RefreshToken[]
+
   
   // Relations
   patientVisits    Visit[]       @relation("PatientVisits")
   doctorVisits     Visit[]       @relation("DoctorVisits")
+  patientReports   PatientReport[] @relation("PatientReports")
+  doctorReports    PatientReport[] @relation("DoctorReports")
   vitals           Vital[]
   chats            Chat[]
   prescriptions    Prescription[] @relation("PatientPrescriptions")
@@ -318,12 +362,18 @@ model Vital {
   @@index([patientId])
 }
 
+enum AllergySeverity {
+  MILD
+  MODERATE
+  SEVERE
+}
+
 model Allergy {
   id          String @id @default(uuid())
   patientId   String
   patient     User   @relation(fields: [patientId], references: [id])
   allergen    String
-  severity    String // MILD, MODERATE, SEVERE
+  severity    AllergySeverity
   reaction    String?
   
   createdAt   DateTime @default(now())
@@ -336,6 +386,25 @@ model EmergencyContact {
   name         String
   relationship String
   phoneNumber  String
+}
+
+model PatientReport {
+  id        String   @id @default(uuid())
+  patientId String
+  patient   User     @relation("PatientReports", fields: [patientId], references: [id])
+  doctorId  String
+  doctor    User     @relation("DoctorReports", fields: [doctorId], references: [id])
+  
+  symptoms  String
+  severity  String   // e.g., MILD, MODERATE, SEVERE
+  notes     String?
+  isReviewed Boolean @default(false)
+  
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([doctorId, isReviewed])
 }
 ```
 
@@ -353,7 +422,8 @@ model Appointment {
   scheduledAt DateTime
   status      AppointmentStatus
   reason      String?
-  
+  preBrief    String?  // AI-generated summary of patient history for doctor
+  deletedAt   DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
@@ -387,6 +457,7 @@ model Prescription {
 
   medSchedules  MedicationSchedule[]
   
+  deletedAt     DateTime?
   createdAt     DateTime @default(now())
 }
 
@@ -397,6 +468,7 @@ model MedicationSchedule {
 
   reminderTime   DateTime
   isTaken        Boolean @default(false)
+  notificationSent Boolean @default(false)
 }
 ```
 
@@ -423,6 +495,7 @@ model Notification {
   title       String
   message     String
   isRead      Boolean  @default(false)
+  deletedAt   DateTime?
   createdAt   DateTime @default(now())
 }
 
@@ -443,6 +516,32 @@ model ChatMessage {
   role      String
   content   String
 
+  createdAt DateTime @default(now())
+}
+```
+
+
+## 6. Security & Profiles
+
+```prisma
+model DoctorProfile {
+  id             String @id @default(uuid())
+  userId         String @unique
+  user           User   @relation(fields: [userId], references: [id])
+  specialization String
+  licenseNumber  String
+  clinicName     String?
+  consultationFee Float?
+  availableSlots Json?
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
   createdAt DateTime @default(now())
 }
 ```
@@ -472,11 +571,16 @@ This document maps the RESTful API structure to their respective controllers.
 | `POST` | `/login` | `loginUser` | Authenticate and return JWT. |
 | `POST` | `/refresh` | `refreshToken` | Refresh JWT using http-only cookie. |
 | `POST` | `/logout` | `logoutUser` | Invalidate token and logout user. |
+| **Health & System** | | | |
+| `GET` | `/health` | `healthCheck` | Standard system health check. |
 | **User Profile** | `(/api/v1/users)` | | |
+| `GET` | `/me` | `getMe` | Fetch current logged-in user profile from JWT. |
+| `GET` | `/:id` | `getUserProfile` | Fetch specific user/patient profile. |
 | `PUT` | `/profile` | `updateProfile` | Update user details, health info. |
 | **AI Scribe** | `(/api/v1/scribe)` | | |
 | `POST` | `/upload-audio` | `processVisitAudio` | Upload ambient audio, return SOAP note. |
 | `GET` | `/visits/:patientId` | `getPatientVisits` | Fetch past visit notes for context. |
+| `GET` | `/detail/:id` | `getVisitDetail` | Fetch a single visit detail. |
 | `DELETE` | `/visits/:id` | `deleteVisit` | Soft delete/archive a visit. |
 | **Vitals & Labs** | `(/api/v1/vitals)` | | |
 | `POST` | `/record` | `addVitals` | Add new heart rate or lab result. |
@@ -484,17 +588,24 @@ This document maps the RESTful API structure to their respective controllers.
 | **AI Companion** | `(/api/v1/chat)` | | |
 | `POST` | `/ask` | `askHealthCompanion` | AI responds using patient context. |
 | `POST` | `/explain-term` | `explainMedicalTerm` | "Tap-to-Explain" for complex terms. |
+| **Care Coordination** | `(/api/v1/reports)` | | |
+| `POST` | `/` | `submitPatientReport` | Patient submits symptom/progress update. |
+| `PUT` | `/:id/review` | `reviewPatientReport` | Doctor marks report as reviewed. |
 | **Appointments** | `(/api/v1/appointments)` | | |
 | `POST` | `/` | `scheduleAppointment` | Schedule a new visit. |
 | `GET` | `/` | `getAppointments` | Fetch doctor/patient schedule. |
+| `GET` | `/:id/brief` | `getPreVisitBrief` | Fetch AI pre-visit summary for doctor. |
+| `PUT` | `/:id` | `updateAppointment` | Cancel or reschedule appointment. |
 | **Prescriptions** | `(/api/v1/prescriptions)` | | |
 | `POST` | `/` | `createPrescription` | Issue a new medication. |
 | `GET` | `/:patientId` | `getPrescriptions` | Manage and retrieve patient meds. |
+| `DELETE` | `/:id` | `deletePrescription` | Soft-delete a prescription. |
 | **Notifications** | `(/api/v1/notifications)` | | |
 | `GET` | `/` | `getNotifications` | Fetch unread alerts. |
 | `PUT` | `/:id/read` | `markAsRead` | Update notification status. |
 | **Admin** | `(/api/v1/admin)` | | |
 | `GET` | `/users` | `getAllUsers` | Admin dashboard data retrieval. |
+| `GET` | `/analytics` | `getAnalytics` | Admin analytics & metrics. |
 | `GET` | `/audit-logs` | `getAuditLogs` | Fetch system audit trails. |
 
 
@@ -521,13 +632,14 @@ Core business logic and external API integrations.
 ### 1. `aiService.js` (Intelligence)
 - **Primary Task**: Interfacing with budget-friendly/free LLMs (DeepSeek, GLM-5.1, or Gemini).
 - **`generateSOAP(transcript)`**: Prompts AI to extract **Subjective, Objective, Assessment, and Plan**.
-- **`chatWithContext(patientId, query)`**: Fetches DB history via Prisma, feeds it to the AI for a tailored response.
+- **`generatePreVisitBrief(patientId)`**: Analyzes past visits, vitals, allergies, and active prescriptions to generate a 1-page clinical summary for doctors.
+- **`chatWithContext(patientId, query)`**: Fetches DB history via Prisma. **Context Strategy**: Limits the fetch to the last 5 chat messages, the 3 most recent vitals, and active prescriptions/allergies, serializing them into a structured JSON string injected into the system prompt. This strictly manages the token budget and prevents context window exhaustion.
 
 ### 2. `audioService.js` (Transcription)
 - **Primary Task**: Connects to external Audio-to-Text free-tier Audio-to-Text APIs (e.g., Google Gemini Flash or Groq Whisper).
 
 ### 3. `prescriptionService.js` (Medication Management)
-- **Primary Task**: Handles creation of prescriptions, validates drug interactions (future scope), and syncs with scheduling.
+- **Primary Task**: Handles creation of prescriptions, validates drug interactions (future scope), and syncs with scheduling. It **automatically generates** the `MedicationSchedule` records based on the frequency defined in the prescription.
 
 ### 4. `appointmentService.js` (Scheduling)
 - **Primary Task**: Manages booking logic, prevents double-booking for doctors, and triggers reminder workflows.
@@ -553,7 +665,10 @@ Core business logic and external API integrations.
 - **Password Hashing**: All user passwords are encrypted using `bcrypt` (salt rounds: 10) before storage. Plaintext passwords never touch the database.
 - **JWT Refresh Token Strategy**: 
   - Access Tokens (short-lived, ~15 minutes) are sent to the client.
-  - Refresh Tokens (long-lived, ~7 days) are stored in highly secure, **HTTP-only, SameSite=Strict cookies** to mitigate XSS (Cross-Site Scripting) attacks.
+  - Refresh Tokens (long-lived, ~7 days) are stored in highly secure, **HTTP-only, SameSite=Strict cookies**.
+  - **Database Storage**: Refresh tokens are physically stored in the `RefreshToken` table with an `expiresAt` flag.
+  - **Rotation**: Whenever a refresh token is used, it is instantly revoked, and a new one is generated.
+  - **Logout**: Explicitly deletes/revokes the refresh token record from the DB, ensuring it cannot be used if stolen.
 
 ## 2. Role-Based Access Control (RBAC)
 Strict separation of concerns via `roleMiddleware.js`:
@@ -708,6 +823,14 @@ To maintain system integrity, n8n is strictly excluded from:
 ### Workflow 5 — Critical Health Alerts
 *   **Trigger**: Webhook from Backend (Abnormal vitals logged).
 *   **Action**: Immediately triggers an urgent push notification and SMS to the assigned doctor.
+
+### Workflow 6 — AI Pre-Visit Brief Generation
+*   **Trigger**: Cron job running 30 minutes before `scheduledAt` (or triggered on appointment confirmation).
+*   **Action**: Calls `aiService.generatePreVisitBrief(patientId)` -> Compiles active meds, chronic conditions, and last 2 visits into a plain clinical summary -> Saves to `Appointment.preBrief` -> Notifies the doctor that the brief is ready.
+
+### Workflow 7 — Closed-Loop Care Coordination
+*   **Trigger**: Webhook from Backend (Patient submits new `PatientReport` or abnormal `Vital`).
+*   **Action**: AI evaluates severity -> If severe, immediately pages the doctor -> Otherwise, aggregates into the doctor's daily digest. When the doctor triggers `reviewPatientReport`, n8n dispatches a notification back to the patient: "Your doctor has reviewed your update."
 
 
 ---
