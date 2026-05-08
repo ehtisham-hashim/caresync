@@ -170,6 +170,9 @@ model Prescription {
   duration      String
   notes         String?
   
+  simplifiedInstructions String? // AI generated patient-friendly instructions
+  voiceInstructionUrl    String? // TTS generated audio guidance
+
   medSchedules  MedicationSchedule[]
   
   createdAt     DateTime @default(now())
