@@ -1,0 +1,272 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  role         Role // Enum: PATIENT, DOCTOR, ADMIN
+  name         String
+  dateOfBirth  DateTime?
+
+  // Healthcare-Specific Data (Primarily for Patients)
+  bloodGroup     String?
+  medicalHistory String[] // Array of chronic diseases / past conditions
+  insuranceInfo  Json? // Insurance provider, policy number, etc.
+  familyHistory  Json? // Family medical history
+
+  // Profiles & Security
+  doctorProfile DoctorProfile?
+  refreshTokens RefreshToken[]
+
+  // Relations
+  patientVisits     Visit[]            @relation("PatientVisits")
+  doctorVisits      Visit[]            @relation("DoctorVisits")
+  patientReports    PatientReport[]    @relation("PatientReports")
+  doctorReports     PatientReport[]    @relation("DoctorReports")
+  vitals            Vital[]
+  chats             Chat[]
+  prescriptions     Prescription[]     @relation("PatientPrescriptions")
+  doctorPrescripts  Prescription[]     @relation("DoctorPrescriptions")
+  appointments      Appointment[]      @relation("PatientAppointments")
+  doctorAppts       Appointment[]      @relation("DoctorAppointments")
+  allergies         Allergy[]
+  emergencyContacts EmergencyContact[]
+  notifications     Notification[]
+
+  // Doctor-Patient Ownership (Multi-doctor support)
+  doctors  User[] @relation("DoctorPatient")
+  patients User[] @relation("DoctorPatient")
+
+  // Soft deletes
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+enum Role {
+  PATIENT
+  DOCTOR
+  ADMIN
+}
+
+model Visit {
+  id        String @id @default(uuid())
+  patientId String
+  patient   User   @relation("PatientVisits", fields: [patientId], references: [id])
+  doctorId  String
+  doctor    User   @relation("DoctorVisits", fields: [doctorId], references: [id])
+
+  audioUrl      String? // Cloudinary/Supabase URL
+  rawTranscript String
+
+  // SOAP Note Fields
+  subjective String?
+  objective  String?
+  assessment String?
+  plan       String?
+
+  medicalTerms Json? // e.g., [{"term": "Tachycardia", "meaning": "Fast heart rate"}]
+
+  prescriptions Prescription[]
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+}
+
+model Vital {
+  id        String @id @default(uuid())
+  patientId String
+  patient   User   @relation(fields: [patientId], references: [id])
+
+  heartRate     Int?
+  bloodPressure String?
+  weight        Float?
+  temperature   Float?
+  labResults    Json? // e.g., [{"test": "HbA1c", "value": "5.7", "unit": "%"}]
+
+  recordedAt DateTime @default(now())
+
+  @@index([patientId])
+}
+
+enum AllergySeverity {
+  MILD
+  MODERATE
+  SEVERE
+}
+
+model Allergy {
+  id        String          @id @default(uuid())
+  patientId String
+  patient   User            @relation(fields: [patientId], references: [id])
+  allergen  String
+  severity  AllergySeverity
+  reaction  String?
+
+  createdAt DateTime @default(now())
+}
+
+model EmergencyContact {
+  id           String @id @default(uuid())
+  patientId    String
+  patient      User   @relation(fields: [patientId], references: [id])
+  name         String
+  relationship String
+  phoneNumber  String
+}
+
+model PatientReport {
+  id        String @id @default(uuid())
+  patientId String
+  patient   User   @relation("PatientReports", fields: [patientId], references: [id])
+  doctorId  String
+  doctor    User   @relation("DoctorReports", fields: [doctorId], references: [id])
+
+  symptoms   String
+  severity   String // e.g., MILD, MODERATE, SEVERE
+  notes      String?
+  isReviewed Boolean @default(false)
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([doctorId, isReviewed])
+}
+
+model Appointment {
+  id        String @id @default(uuid())
+  patientId String
+  patient   User   @relation("PatientAppointments", fields: [patientId], references: [id])
+  doctorId  String
+  doctor    User   @relation("DoctorAppointments", fields: [doctorId], references: [id])
+
+  scheduledAt DateTime
+  status      AppointmentStatus
+  reason      String?
+  preBrief    String? // AI-generated summary of patient history for doctor
+  deletedAt   DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([doctorId, scheduledAt])
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model Prescription {
+  id        String @id @default(uuid())
+  patientId String
+  patient   User   @relation("PatientPrescriptions", fields: [patientId], references: [id])
+  doctorId  String
+  doctor    User   @relation("DoctorPrescriptions", fields: [doctorId], references: [id])
+  visitId   String
+  visit     Visit  @relation(fields: [visitId], references: [id])
+
+  medicineName String
+  dosage       String
+  frequency    String
+  duration     String
+  notes        String?
+
+  simplifiedInstructions String? // AI generated patient-friendly instructions
+  voiceInstructionUrl    String? // TTS generated audio guidance
+
+  medSchedules MedicationSchedule[]
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model MedicationSchedule {
+  id             String       @id @default(uuid())
+  prescriptionId String
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id])
+
+  reminderTime     DateTime
+  isTaken          Boolean  @default(false)
+  notificationSent Boolean  @default(false)
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String // e.g., "UPDATE_PRESCRIPTION", "DELETE_VISIT"
+  entityType String // e.g., "Visit", "User"
+  entityId   String
+  metadata   Json? // Changes made
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  type      String
+  title     String
+  message   String
+  isRead    Boolean   @default(false)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Chat {
+  id        String @id @default(uuid())
+  patientId String
+  patient   User   @relation(fields: [patientId], references: [id])
+
+  messages ChatMessage[]
+
+  updatedAt DateTime @updatedAt
+}
+
+model ChatMessage {
+  id      String @id @default(uuid())
+  chatId  String
+  chat    Chat   @relation(fields: [chatId], references: [id])
+  role    String
+  content String
+
+  createdAt DateTime @default(now())
+}
+
+model DoctorProfile {
+  id              String  @id @default(uuid())
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id])
+  specialization  String
+  licenseNumber   String
+  clinicName      String?
+  consultationFee Float?
+  availableSlots  Json?
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

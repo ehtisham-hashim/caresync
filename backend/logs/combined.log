@@ -1,0 +1,10 @@
+2026-05-11 18:56:08 [info]: 🚀 CareSync Backend running on port 3000
+2026-05-11 18:56:08 [info]: 📋 Environment: development
+2026-05-11 18:56:08 [info]: 🔗 Health check: http://localhost:3000/health
+2026-05-11 18:56:19 [info]: 🚀 CareSync Backend running on port 3000
+2026-05-11 18:56:19 [info]: 📋 Environment: development
+2026-05-11 18:56:19 [info]: 🔗 Health check: http://localhost:3000/health
+2026-05-11 18:56:31 [info]: Request completed
+2026-05-11 18:56:42 [warn]: Request failed
+2026-05-11 18:56:43 [info]: Request completed
+2026-05-11 18:56:57 [info]: Request completed
