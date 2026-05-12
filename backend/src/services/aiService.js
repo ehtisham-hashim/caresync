@@ -43,7 +43,7 @@ Rules:
 
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash',
       generationConfig: { responseMimeType: 'application/json' },
     });
 
@@ -82,7 +82,7 @@ Rules:
  */
 const retrySoapGeneration = async (transcript) => {
   const model = genAI.getGenerativeModel({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.5-flash',
     generationConfig: { responseMimeType: 'application/json' },
   });
 
@@ -146,7 +146,7 @@ export const generatePreVisitBrief = async (patientId) => {
     activePrescriptions: prescriptions,
   });
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const result = await model.generateContent([
     {
@@ -198,7 +198,7 @@ export const chatWithContext = async (patientId, query) => {
     allergies,
   });
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const result = await model.generateContent([
     {
@@ -241,7 +241,7 @@ Patient's Question: ${query}`,
  * Explain a medical term in simple language (Tap-to-Explain feature).
  */
 export const explainMedicalTerm = async (term) => {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const result = await model.generateContent([
     {

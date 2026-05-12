@@ -7,7 +7,7 @@ export const registerSchema = z.object({
   role: z.enum(['PATIENT', 'DOCTOR'], {
     errorMap: () => ({ message: 'Role must be PATIENT or DOCTOR.' }),
   }),
-  dateOfBirth: z.string().datetime().optional(),
+  dateOfBirth: z.string().optional(),
   // Doctor-specific fields (optional, only for DOCTOR role)
   specialization: z.string().optional(),
   licenseNumber: z.string().optional(),

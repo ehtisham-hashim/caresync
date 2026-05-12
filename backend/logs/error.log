@@ -1,0 +1,97 @@
+2026-05-12 19:21:09 [error]: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (file:///home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@google+generative-ai@0.24.1/node_modules/@google/generative-ai/dist/index.mjs:432:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async makeRequest (file:///home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@google+generative-ai@0.24.1/node_modules/@google/generative-ai/dist/index.mjs:401:9)
+    at async generateContent (file:///home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@google+generative-ai@0.24.1/node_modules/@google/generative-ai/dist/index.mjs:865:22)
+    at async Module.chatWithContext (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/aiService.js:203:18)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/chatController.js:7:20
+2026-05-12 19:21:37 [error]: PrismaClientKnownRequestError: 
+Invalid `prisma.appointment.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `Appointment_doctorId_fkey`
+    at zr.handleRequestError (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:65:8286)
+    at zr.handleAndLogRequestError (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:65:7581)
+    at zr.request (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:65:7288)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async a (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:75:6862)
+    at async Module.scheduleAppointment (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/appointmentService.js:35:23)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/appointmentController.js:11:23
+2026-05-12 19:23:38 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+    at /home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:297:9
+    at processParams (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at router.handle (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+    at router (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:60:12)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+2026-05-12 19:23:38 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+    at /home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:297:9
+    at processParams (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at router.handle (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+    at router (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:60:12)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+2026-05-12 19:23:38 [error]: Error: Refresh token is required.
+    at Module.refresh (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/authService.js:134:11)
+    at file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/authController.js:29:76
+    at file:///home/ehtisham/Desktop/Projects/caresync/backend/src/utils/asyncHandler.js:6:19
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+2026-05-12 19:24:34 [error]: Error: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at handleResponseNotOk (file:///home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@google+generative-ai@0.24.1/node_modules/@google/generative-ai/dist/index.mjs:432:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async makeRequest (file:///home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@google+generative-ai@0.24.1/node_modules/@google/generative-ai/dist/index.mjs:401:9)
+    at async generateContent (file:///home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@google+generative-ai@0.24.1/node_modules/@google/generative-ai/dist/index.mjs:865:22)
+    at async Module.chatWithContext (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/aiService.js:203:18)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/chatController.js:7:20
+2026-05-12 19:24:51 [error]: PrismaClientKnownRequestError: 
+Invalid `prisma.appointment.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `Appointment_doctorId_fkey`
+    at zr.handleRequestError (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:65:8286)
+    at zr.handleAndLogRequestError (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:65:7581)
+    at zr.request (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:65:7288)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async a (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react@19.2.14_react-dom@19.2.6_react@19.2.6__r_f396377cf49b0bec41ee0857f7cd6490/node_modules/@prisma/client/runtime/client.js:75:6862)
+    at async Module.scheduleAppointment (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/appointmentService.js:35:23)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/appointmentController.js:11:23
+2026-05-12 19:32:23 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+    at /home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:297:9
+    at processParams (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at router.handle (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+    at router (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:60:12)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+2026-05-12 19:32:23 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+    at /home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:297:9
+    at processParams (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at router.handle (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+    at router (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:60:12)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+2026-05-12 19:34:22 [error]: Error: An account with this email already exists.
+    at Module.register (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/authService.js:54:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/authController.js:14:47
