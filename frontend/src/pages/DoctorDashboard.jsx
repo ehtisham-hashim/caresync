@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { doctorService } from '../services/doctorService';
 import Card from '../components/common/Card';
 import Loader from '../components/common/Loader';
@@ -6,6 +7,7 @@ import { Users, Calendar, FileText, Activity } from 'lucide-react';
 import { formatDate } from '../utils/formatDate';
 
 export default function DoctorDashboard() {
+  const navigate = useNavigate();
   const { data: dashboardData, isLoading: dashboardLoading } = useQuery({
     queryKey: ['doctor-dashboard'],
     queryFn: doctorService.getDashboard,
@@ -29,24 +31,28 @@ export default function DoctorDashboard() {
       value: stats.totalPatients || 0,
       icon: Users,
       color: 'blue',
+      onClick: () => navigate('/provider/patients'),
     },
     {
       title: 'Today\'s Appointments',
       value: dashboard.todayAppointments || 0,
       icon: Calendar,
       color: 'green',
+      onClick: () => navigate('/provider/calendar'),
     },
     {
       title: 'Pending Reports',
       value: dashboard.pendingReportsCount || 0,
       icon: FileText,
       color: 'orange',
+      onClick: () => navigate('/provider/reports'),
     },
     {
       title: 'Visits This Month',
       value: stats.visitsThisMonth || 0,
       icon: Activity,
       color: 'purple',
+      onClick: () => navigate('/provider/visits'),
     },
   ];
 
@@ -70,7 +76,11 @@ export default function DoctorDashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat) => (
-          <Card key={stat.title} className="hover:shadow-md transition-shadow">
+          <Card 
+            key={stat.title} 
+            className="hover:shadow-md transition-shadow cursor-pointer"
+            onClick={stat.onClick}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">{stat.title}</p>
@@ -98,7 +108,8 @@ export default function DoctorDashboard() {
             {dashboard.upcomingAppointments.map((appointment) => (
               <div
                 key={appointment.id}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                onClick={() => navigate(`/provider/patients/${appointment.patient?.id}`)}
               >
                 <div className="flex items-center space-x-4">
                   <div className="shrink-0">

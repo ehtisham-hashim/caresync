@@ -4,6 +4,7 @@ import { ERROR_CODES } from '../../constants/errorCodes.js';
 
 /**
  * Schedule a new appointment. Prevents double-booking for doctors.
+ * Also links patient to doctor if not already linked.
  */
 export const scheduleAppointment = async (data) => {
   // Check for double-booking: same doctor within 30-minute window
@@ -32,6 +33,7 @@ export const scheduleAppointment = async (data) => {
     );
   }
 
+  // Create appointment
   const appointment = await prisma.appointment.create({
     data: {
       patientId: data.patientId,
@@ -41,6 +43,28 @@ export const scheduleAppointment = async (data) => {
       reason: data.reason || null,
     },
   });
+
+  // Link patient to doctor if not already linked
+  const patient = await prisma.user.findUnique({
+    where: { id: data.patientId },
+    include: {
+      doctors: {
+        where: { id: data.doctorId },
+      },
+    },
+  });
+
+  if (patient && patient.doctors.length === 0) {
+    // Patient is not linked to this doctor, so link them
+    await prisma.user.update({
+      where: { id: data.patientId },
+      data: {
+        doctors: {
+          connect: { id: data.doctorId },
+        },
+      },
+    });
+  }
 
   return appointment;
 };
@@ -99,4 +123,61 @@ export const updateAppointment = async (appointmentId, data, userId) => {
   return updated;
 };
 
-export default { scheduleAppointment, getAppointments, updateAppointment };
+/**
+ * Confirm appointment (doctor only)
+ */
+export const confirmAppointment = async (appointmentId, doctorId) => {
+  const appointment = await prisma.appointment.findUnique({
+    where: { id: appointmentId, deletedAt: null },
+  });
+
+  if (!appointment) {
+    throw new ApiError(404, 'Appointment not found.', ERROR_CODES.NOT_FOUND);
+  }
+
+  if (appointment.doctorId !== doctorId) {
+    throw new ApiError(403, 'You can only confirm your own appointments.', ERROR_CODES.FORBIDDEN);
+  }
+
+  const updated = await prisma.appointment.update({
+    where: { id: appointmentId },
+    data: { status: 'CONFIRMED' },
+    include: {
+      patient: { select: { id: true, name: true, email: true } },
+      doctor: { select: { id: true, name: true, email: true } },
+    },
+  });
+
+  return updated;
+};
+
+/**
+ * Cancel appointment (patient or doctor)
+ */
+export const cancelAppointment = async (appointmentId, userId) => {
+  const appointment = await prisma.appointment.findUnique({
+    where: { id: appointmentId, deletedAt: null },
+  });
+
+  if (!appointment) {
+    throw new ApiError(404, 'Appointment not found.', ERROR_CODES.NOT_FOUND);
+  }
+
+  // Check if user is patient or doctor of this appointment
+  if (appointment.patientId !== userId && appointment.doctorId !== userId) {
+    throw new ApiError(403, 'You can only cancel your own appointments.', ERROR_CODES.FORBIDDEN);
+  }
+
+  const updated = await prisma.appointment.update({
+    where: { id: appointmentId },
+    data: { status: 'CANCELLED' },
+    include: {
+      patient: { select: { id: true, name: true, email: true } },
+      doctor: { select: { id: true, name: true, email: true } },
+    },
+  });
+
+  return updated;
+};
+
+export default { scheduleAppointment, getAppointments, updateAppointment, confirmAppointment, cancelAppointment };

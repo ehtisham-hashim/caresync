@@ -28,4 +28,16 @@ export const appointmentService = {
     const response = await api.put(`/appointments/${appointmentId}`, data);
     return response.data;
   },
+
+  // Confirm appointment (doctor)
+  confirmAppointment: async (appointmentId) => {
+    const response = await api.patch(`/appointments/${appointmentId}/confirm`);
+    return response.data;
+  },
+
+  // Cancel appointment
+  cancelAppointment: async (appointmentId) => {
+    const response = await api.patch(`/appointments/${appointmentId}/cancel`);
+    return response.data;
+  },
 };

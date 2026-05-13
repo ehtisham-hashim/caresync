@@ -34,3 +34,13 @@ export const updateAppointment = asyncHandler(async (req, res) => {
   const updated = await appointmentService.updateAppointment(req.params.id, req.body, req.user.id);
   sendSuccess(res, 200, 'Appointment updated.', updated);
 });
+
+export const confirmAppointment = asyncHandler(async (req, res) => {
+  const confirmed = await appointmentService.confirmAppointment(req.params.id, req.user.id);
+  sendSuccess(res, 200, 'Appointment confirmed.', confirmed);
+});
+
+export const cancelAppointment = asyncHandler(async (req, res) => {
+  const cancelled = await appointmentService.cancelAppointment(req.params.id, req.user.id);
+  sendSuccess(res, 200, 'Appointment cancelled.', cancelled);
+});

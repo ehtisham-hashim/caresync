@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -20,6 +20,7 @@ const appointmentSchema = z.object({
 export default function AppointmentsPage() {
   const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: appointmentsData, refetch } = useQuery({
     queryKey: ['appointments'],
@@ -40,6 +41,25 @@ export default function AppointmentsPage() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(appointmentSchema),
   });
+
+  const cancelMutation = useMutation({
+    mutationFn: async (appointmentId) => {
+      await api.patch(`/appointments/${appointmentId}/cancel`);
+    },
+    onSuccess: () => {
+      toast.success('Appointment cancelled successfully');
+      queryClient.invalidateQueries(['appointments']);
+    },
+    onError: () => {
+      toast.error('Failed to cancel appointment');
+    },
+  });
+
+  const handleCancelAppointment = (appointmentId) => {
+    if (window.confirm('Are you sure you want to cancel this appointment?')) {
+      cancelMutation.mutate(appointmentId);
+    }
+  };
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
@@ -112,7 +132,13 @@ export default function AppointmentsPage() {
               </div>
               {apt.status === 'PENDING' || apt.status === 'CONFIRMED' ? (
                 <div className="pt-4 border-t border-gray-100">
-                  <Button variant="outline" size="sm" className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                    onClick={() => handleCancelAppointment(apt.id)}
+                    isLoading={cancelMutation.isPending}
+                  >
                     Cancel Appointment
                   </Button>
                 </div>

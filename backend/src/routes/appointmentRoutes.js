@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { scheduleAppointment, getAppointments, getPreVisitBrief, updateAppointment } from '../controllers/appointmentController.js';
+import { scheduleAppointment, getAppointments, getPreVisitBrief, updateAppointment, confirmAppointment, cancelAppointment } from '../controllers/appointmentController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import authorize from '../middlewares/roleMiddleware.js';
 import validate from '../middlewares/validationMiddleware.js';
@@ -13,5 +13,7 @@ router.post('/', validate(scheduleAppointmentSchema), scheduleAppointment);
 router.get('/', getAppointments);
 router.get('/:id/brief', authorize('DOCTOR'), getPreVisitBrief);
 router.put('/:id', validate(updateAppointmentSchema), updateAppointment);
+router.patch('/:id/confirm', authorize('DOCTOR'), confirmAppointment);
+router.patch('/:id/cancel', cancelAppointment);
 
 export default router;

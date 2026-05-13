@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { doctorService } from '../services/doctorService';
 import { appointmentService } from '../services/appointmentService';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Loader from '../components/common/Loader';
-import { Calendar, Clock, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, User, ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 import { formatDate } from '../utils/formatDate';
+import toast from 'react-hot-toast';
 
 export default function DoctorCalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const queryClient = useQueryClient();
   
   // Get start and end of week
   const getWeekRange = (date) => {
@@ -46,6 +48,40 @@ export default function DoctorCalendarPage() {
 
   const goToToday = () => {
     setCurrentDate(new Date());
+  };
+
+  const confirmMutation = useMutation({
+    mutationFn: (appointmentId) => appointmentService.confirmAppointment(appointmentId),
+    onSuccess: () => {
+      toast.success('Appointment confirmed');
+      queryClient.invalidateQueries(['doctor-schedule']);
+    },
+    onError: () => {
+      toast.error('Failed to confirm appointment');
+    },
+  });
+
+  const cancelMutation = useMutation({
+    mutationFn: (appointmentId) => appointmentService.cancelAppointment(appointmentId),
+    onSuccess: () => {
+      toast.success('Appointment cancelled');
+      queryClient.invalidateQueries(['doctor-schedule']);
+    },
+    onError: () => {
+      toast.error('Failed to cancel appointment');
+    },
+  });
+
+  const handleConfirm = (e, appointmentId) => {
+    e.stopPropagation();
+    confirmMutation.mutate(appointmentId);
+  };
+
+  const handleCancel = (e, appointmentId) => {
+    e.stopPropagation();
+    if (window.confirm('Are you sure you want to cancel this appointment?')) {
+      cancelMutation.mutate(appointmentId);
+    }
   };
 
   // Group appointments by date
@@ -206,6 +242,28 @@ export default function DoctorCalendarPage() {
                   <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(apt.status)}`}>
                     {apt.status}
                   </span>
+                  {apt.status === 'PENDING' && (
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-green-600 hover:bg-green-50 border-green-200"
+                        onClick={(e) => handleConfirm(e, apt.id)}
+                        isLoading={confirmMutation.isPending}
+                      >
+                        <Check className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-red-600 hover:bg-red-50 border-red-200"
+                        onClick={(e) => handleCancel(e, apt.id)}
+                        isLoading={cancelMutation.isPending}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
