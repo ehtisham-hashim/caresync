@@ -9,11 +9,13 @@ import appointmentRoutes from './appointmentRoutes.js';
 import prescriptionRoutes from './prescriptionRoutes.js';
 import notificationRoutes from './notificationRoutes.js';
 import adminRoutes from './adminRoutes.js';
+import doctorRoutes from './doctorRoutes.js';
 
 const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
+router.use('/doctor', doctorRoutes);
 router.use('/scribe', scribeRoutes);
 router.use('/vitals', vitalRoutes);
 router.use('/chat', chatRoutes);

@@ -43,4 +43,39 @@ export const reviewPatientReport = async (reportId, doctorId) => {
   return updated;
 };
 
-export default { submitPatientReport, reviewPatientReport };
+/**
+ * Get all reports for a doctor with optional filtering
+ */
+export const getDoctorReports = async (doctorId, { page = 1, limit = 20, isReviewed }) => {
+  const skip = (page - 1) * limit;
+
+  const where = {
+    doctorId,
+    deletedAt: null,
+    ...(isReviewed !== undefined && { isReviewed }),
+  };
+
+  const [reports, total] = await Promise.all([
+    prisma.patientReport.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+      include: {
+        patient: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            dateOfBirth: true,
+          },
+        },
+      },
+    }),
+    prisma.patientReport.count({ where }),
+  ]);
+
+  return { reports, total, page, limit };
+};
+
+export default { submitPatientReport, reviewPatientReport, getDoctorReports };

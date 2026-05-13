@@ -1,11 +1,11 @@
-import api from './api';
+import api, { setAccessToken } from './api';
 
 export const authService = {
   async register(data) {
     const response = await api.post('/auth/register', data);
     const { accessToken } = response.data.data;
     if (accessToken) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      setAccessToken(accessToken);
     }
     return response.data;
   },
@@ -14,7 +14,7 @@ export const authService = {
     const response = await api.post('/auth/login', data);
     const { accessToken } = response.data.data;
     if (accessToken) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      setAccessToken(accessToken);
     }
     return response.data;
   },
@@ -30,7 +30,7 @@ export const authService = {
     } catch (error) {
       console.error('Logout failed on server', error);
     } finally {
-      delete api.defaults.headers.common['Authorization'];
+      setAccessToken(null);
     }
   }
 };

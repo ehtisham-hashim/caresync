@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import PatientLayout from '../components/layouts/PatientLayout';
+import DoctorLayout from '../components/layouts/DoctorLayout';
 import Navbar from '../components/layouts/Navbar';
 
-// Pages
+// Patient Pages
 import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
@@ -13,6 +14,15 @@ import SubmitReportPage from '../pages/SubmitReportPage';
 import AppointmentsPage from '../pages/AppointmentsPage';
 import PrescriptionsPage from '../pages/PrescriptionsPage';
 import VitalsPage from '../pages/VitalsPage';
+
+// Doctor Pages
+import DoctorDashboard from '../pages/DoctorDashboard';
+import DoctorPatientsPage from '../pages/DoctorPatientsPage';
+import PatientDetailPage from '../pages/PatientDetailPage';
+import ScribePage from '../pages/ScribePage';
+import DoctorReportsPage from '../pages/DoctorReportsPage';
+import DoctorCalendarPage from '../pages/DoctorCalendarPage';
+import DoctorVisitsPage from '../pages/DoctorVisitsPage';
 
 export default function AppRoutes() {
   return (
@@ -34,9 +44,18 @@ export default function AppRoutes() {
         </Route>
       </Route>
 
-      {/* Doctor Routes (Placeholders) */}
+      {/* Doctor Routes */}
       <Route element={<ProtectedRoute allowedRoles={['DOCTOR']} />}>
-        <Route path="/provider/dashboard" element={<><Navbar /><div className="p-8 text-center text-xl font-bold">Doctor Dashboard (Coming Soon)</div></>} />
+        <Route element={<DoctorLayout />}>
+          <Route path="/provider/dashboard" element={<DoctorDashboard />} />
+          <Route path="/provider/patients" element={<DoctorPatientsPage />} />
+          <Route path="/provider/patients/:patientId" element={<PatientDetailPage />} />
+          <Route path="/provider/scribe" element={<ScribePage />} />
+          <Route path="/provider/reports" element={<DoctorReportsPage />} />
+          <Route path="/provider/calendar" element={<DoctorCalendarPage />} />
+          <Route path="/provider/visits" element={<DoctorVisitsPage />} />
+          <Route path="/provider/visits/:visitId" element={<DoctorVisitsPage />} />
+        </Route>
       </Route>
       
       {/* Fallback */}

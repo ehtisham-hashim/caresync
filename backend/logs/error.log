@@ -95,3 +95,262 @@ Foreign key constraint violated on the constraint: `Appointment_doctorId_fkey`
     at Module.register (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/authService.js:54:11)
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
     at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/authController.js:14:47
+2026-05-13 16:28:03 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 16:28:03 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 16:28:03 [error]: Error: Refresh token is required.
+    at Module.refresh (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:134:11)
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:29:76
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/utils/asyncHandler.js:6:19
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:117:3)
+    at handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:295:15
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+2026-05-13 17:52:21 [error]: Error: Invalid email or password.
+    at Module.login (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:111:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:21:47
+2026-05-13 18:06:54 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:06:54 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:07:29 [error]: Error: An account with this email already exists.
+    at Module.register (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:54:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:14:47
+2026-05-13 18:24:15 [error]: Error: Token has expired.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:24:13)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:24:15 [error]: Error: Token has expired.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:24:13)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:24:16 [error]: Error: Token has expired.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:24:13)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:25:32 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:25:32 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:25:33 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:25:33 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:25:34 [error]: Error: Refresh token has been revoked.
+    at Module.refresh (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:151:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:29:58
+2026-05-13 18:25:34 [error]: Error: Refresh token has been revoked.
+    at Module.refresh (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:151:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:29:58
+2026-05-13 18:25:35 [error]: Error: Refresh token has been revoked.
+    at Module.refresh (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:151:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:29:58
+2026-05-13 18:25:59 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:25:59 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:25:59 [error]: Error: Refresh token is required.
+    at Module.refresh (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:134:11)
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:29:76
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/utils/asyncHandler.js:6:19
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:117:3)
+    at handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:295:15
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+2026-05-13 18:25:59 [error]: Error: Refresh token is required.
+    at Module.refresh (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:134:11)
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:29:76
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/utils/asyncHandler.js:6:19
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:117:3)
+    at handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:295:15
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+2026-05-13 18:47:50 [error]: TypeError: Cannot read properties of undefined (reading 'map')
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/validationMiddleware.js:14:49
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:157:13)
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/node_modules/.pnpm/express-rate-limit@8.5.1_express@5.2.1/node_modules/express-rate-limit/dist/index.mjs:970:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/node_modules/.pnpm/express-rate-limit@8.5.1_express@5.2.1/node_modules/express-rate-limit/dist/index.mjs:825:5
+2026-05-13 18:50:49 [error]: TypeError: Cannot read properties of undefined (reading 'map')
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/validationMiddleware.js:14:49
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\route.js:157:13)
+    at file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/node_modules/.pnpm/express-rate-limit@8.5.1_express@5.2.1/node_modules/express-rate-limit/dist/index.mjs:970:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/node_modules/.pnpm/express-rate-limit@8.5.1_express@5.2.1/node_modules/express-rate-limit/dist/index.mjs:825:5
+2026-05-13 18:55:47 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 18:59:09 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 19:13:52 [error]: Error: Invalid token.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:26:11)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 19:22:42 [error]: Error: Token has expired.
+    at authMiddleware (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/middlewares/authMiddleware.js:24:13)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+    at E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:297:9
+    at processParams (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:582:12)
+    at next (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:291:5)
+    at Function.handle (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:186:3)
+    at router (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\4th Semester 2026\Advance DBMS\Project\Project\caresync\backend\node_modules\.pnpm\router@2.2.0\node_modules\router\index.js:342:13)
+2026-05-13 19:22:45 [error]: Error: ENOENT: no such file or directory, open 'E:\tmp\audio-1778682165449-889624371.webm'
+2026-05-13 19:23:10 [error]: Error: An account with this email already exists.
+    at Module.register (file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/services/authService.js:54:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///E:/4th%20Semester%202026/Advance%20DBMS/Project/Project/caresync/backend/src/controllers/authController.js:14:47

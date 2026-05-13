@@ -7,6 +7,20 @@ const api = axios.create({
   withCredentials: true, // Important for cookies
 });
 
+// Store access token in memory
+let accessToken = null;
+
+export const setAccessToken = (token) => {
+  accessToken = token;
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common['Authorization'];
+  }
+};
+
+export const getAccessToken = () => accessToken;
+
 // Flag to prevent infinite refresh loops
 let isRefreshing = false;
 let failedQueue = [];
@@ -59,7 +73,7 @@ api.interceptors.response.use(
         const { accessToken } = data.data;
 
         // If you are using bearer tokens in headers globally:
-        api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        setAccessToken(accessToken);
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
         
         processQueue(null, accessToken);

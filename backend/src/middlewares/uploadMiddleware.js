@@ -1,9 +1,10 @@
 import multer from 'multer';
 import path from 'path';
+import os from 'os';
 import { ApiError } from '../utils/apiResponse.js';
 
 // Allowed MIME types for uploads
-const ALLOWED_AUDIO_TYPES = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/webm', 'audio/ogg'];
+const ALLOWED_AUDIO_TYPES = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/webm', 'audio/ogg', 'audio/mp4', 'audio/x-m4a'];
 const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
 const ALL_ALLOWED_TYPES = [...ALLOWED_AUDIO_TYPES, ...ALLOWED_IMAGE_TYPES];
 
@@ -12,7 +13,7 @@ const MAX_FILE_SIZE = 25 * 1024 * 1024;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/tmp');
+    cb(null, os.tmpdir()); // Works on Windows, Mac, Linux
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
