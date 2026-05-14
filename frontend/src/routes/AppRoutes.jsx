@@ -16,13 +16,11 @@ import PrescriptionsPage from '../pages/PrescriptionsPage';
 import VitalsPage from '../pages/VitalsPage';
 
 // Doctor Pages
-import DoctorDashboard from '../pages/DoctorDashboard';
-import DoctorPatientsPage from '../pages/DoctorPatientsPage';
-import PatientDetailPage from '../pages/PatientDetailPage';
-import ScribePage from '../pages/ScribePage';
-import DoctorReportsPage from '../pages/DoctorReportsPage';
-import DoctorCalendarPage from '../pages/DoctorCalendarPage';
-import DoctorVisitsPage from '../pages/DoctorVisitsPage';
+import DoctorDashboard from '../pages/provider/DoctorDashboard';
+import PatientDirectory from '../pages/provider/PatientDirectory';
+import ScribeConsole from '../pages/provider/ScribeConsole';
+import DoctorReports from '../pages/provider/DoctorReports';
+import DoctorCalendar from '../pages/provider/DoctorCalendar';
 
 export default function AppRoutes() {
   return (
@@ -48,13 +46,13 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute allowedRoles={['DOCTOR']} />}>
         <Route element={<DoctorLayout />}>
           <Route path="/provider/dashboard" element={<DoctorDashboard />} />
-          <Route path="/provider/patients" element={<DoctorPatientsPage />} />
-          <Route path="/provider/patients/:patientId" element={<PatientDetailPage />} />
-          <Route path="/provider/scribe" element={<ScribePage />} />
-          <Route path="/provider/reports" element={<DoctorReportsPage />} />
-          <Route path="/provider/calendar" element={<DoctorCalendarPage />} />
-          <Route path="/provider/visits" element={<DoctorVisitsPage />} />
-          <Route path="/provider/visits/:visitId" element={<DoctorVisitsPage />} />
+          <Route path="/provider/patients" element={<PatientDirectory />} />
+          <Route path="/provider/patients/:patientId" element={<PatientDirectory />} />
+          <Route path="/provider/scribe/:patientId?" element={<ScribeConsole />} />
+          <Route path="/provider/reports" element={<DoctorReports />} />
+          <Route path="/provider/calendar" element={<DoctorCalendar />} />
+          <Route path="/provider/visits" element={<DoctorDashboard />} />
+          <Route path="/provider/visits/:visitId" element={<DoctorDashboard />} />
         </Route>
       </Route>
       

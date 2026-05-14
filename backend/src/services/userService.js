@@ -111,4 +111,22 @@ export const getDoctors = async () => {
   return doctors;
 };
 
-export default { getMe, getUserProfile, updateProfile, getDoctors };
+/**
+ * Get all patients.
+ */
+export const getPatients = async () => {
+  const patients = await prisma.user.findMany({
+    where: { role: 'PATIENT', deletedAt: null },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      dateOfBirth: true,
+      bloodGroup: true,
+      createdAt: true,
+    },
+  });
+  return patients;
+};
+
+export default { getMe, getUserProfile, updateProfile, getDoctors, getPatients };

@@ -21,3 +21,8 @@ export const getDoctors = asyncHandler(async (req, res) => {
   const doctors = await userService.getDoctors();
   sendSuccess(res, 200, 'Doctors fetched.', doctors);
 });
+
+export const getPatients = asyncHandler(async (req, res) => {
+  const patients = await userService.getPatients();
+  sendSuccess(res, 200, 'Patients fetched.', patients);
+});
