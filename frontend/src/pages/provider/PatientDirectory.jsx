@@ -71,10 +71,10 @@ export default function PatientDirectory() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                          {patient.name.charAt(0)}
+                          {patient?.name?.charAt(0) || '?'}
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{patient.name}</div>
+                          <div className="text-sm font-medium text-gray-900">{patient?.name || 'Unknown Patient'}</div>
                           <div className="text-sm text-gray-500">ID: {patient.id.substring(0, 8)}</div>
                         </div>
                       </div>

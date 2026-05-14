@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { formatDateTime } from '../../utils/formatDate';
 
 export default function DoctorReports() {
-  const { data: reports, refetch, isLoading } = useQuery({
+  const { data: reports, refetch, isLoading, isError, error } = useQuery({
     queryKey: ['doctor-reports'],
     queryFn: async () => {
       const { data } = await api.get('/reports/doctor');
@@ -30,6 +30,13 @@ export default function DoctorReports() {
   };
 
   if (isLoading) return <div className="text-center py-12">Loading reports...</div>;
+  if (isError) return (
+    <div className="text-center py-12 text-red-600">
+      <AlertCircle className="h-12 w-12 mx-auto mb-3" />
+      <p>Error loading reports: {error?.message}</p>
+      <Button onClick={() => refetch()} variant="outline" className="mt-4">Try Again</Button>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -79,7 +86,7 @@ export default function DoctorReports() {
                       <CheckCircle className="h-4 w-4 mr-2" /> Mark Reviewed
                     </Button>
                   )}
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => toast('Messaging feature coming soon!', { icon: '💬' })}>
                     Contact Patient
                   </Button>
                 </div>

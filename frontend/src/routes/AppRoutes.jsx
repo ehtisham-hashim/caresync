@@ -51,8 +51,6 @@ export default function AppRoutes() {
           <Route path="/provider/scribe/:patientId?" element={<ScribeConsole />} />
           <Route path="/provider/reports" element={<DoctorReports />} />
           <Route path="/provider/calendar" element={<DoctorCalendar />} />
-          <Route path="/provider/visits" element={<DoctorDashboard />} />
-          <Route path="/provider/visits/:visitId" element={<DoctorDashboard />} />
         </Route>
       </Route>
       

@@ -14,7 +14,7 @@ export default function ScribeConsole() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [soapNotes, setSoapNotes] = useState(null);
 
-  const { data: patient } = useQuery({
+  const { data: patient, isSuccess, isLoading, isError } = useQuery({
     queryKey: ['patient', patientId],
     queryFn: async () => {
       const { data } = await api.get(`/users/${patientId}`);
@@ -42,9 +42,7 @@ export default function ScribeConsole() {
       formData.append('audio', audioBlob, 'visit_audio.webm');
       formData.append('patientId', patientId);
 
-      const { data } = await api.post('/scribe/upload-audio', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const { data } = await api.post('/scribe/upload-audio', formData);
 
       setSoapNotes(data.data);
       toast.success('Audio processed successfully!');
@@ -76,7 +74,9 @@ export default function ScribeConsole() {
       <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">AI Medical Scribe</h1>
-          <p className="text-gray-600">Patient: {patient?.name || 'Loading...'}</p>
+          <p className="text-gray-600">
+            Patient: {isLoading ? 'Loading...' : isError ? 'Error loading patient' : patient?.name || 'Unknown'}
+          </p>
         </div>
         <div className="flex items-center gap-3">
           {status === 'recording' ? (
@@ -118,7 +118,7 @@ export default function ScribeConsole() {
               </div>
               <div className="flex gap-4">
                 {status !== 'recording' ? (
-                  <Button onClick={startRecording} className="bg-red-600 hover:bg-red-700 w-32">
+                  <Button onClick={startRecording} className="bg-red-600 hover:bg-red-700 w-32" disabled={!isSuccess}>
                     Start
                   </Button>
                 ) : (
