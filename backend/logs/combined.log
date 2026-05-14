@@ -984,3 +984,63 @@ Foreign key constraint violated on the constraint: `Appointment_doctorId_fkey`
 2026-05-13 22:10:46 [info]: Request completed
 2026-05-13 22:10:46 [info]: Request completed
 2026-05-13 22:10:48 [info]: Request completed
+2026-05-14 13:59:15 [info]: 🚀 CareSync Backend running on port 3000
+2026-05-14 13:59:15 [info]: 📋 Environment: development
+2026-05-14 13:59:15 [info]: 🔗 Health check: http://localhost:3000/health
+2026-05-14 13:59:33 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+    at /home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:297:9
+    at processParams (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at router.handle (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+    at router (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:60:12)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+2026-05-14 13:59:33 [warn]: Request failed
+2026-05-14 13:59:33 [error]: Error: Access denied. No token provided.
+    at authMiddleware (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/middlewares/authMiddleware.js:13:11)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+    at /home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:297:9
+    at processParams (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at router.handle (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+    at router (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:60:12)
+    at Layer.handleRequest (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ehtisham/Desktop/Projects/caresync/backend/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:342:13)
+2026-05-14 13:59:33 [warn]: Request failed
+2026-05-14 13:59:36 [info]: Request completed
+2026-05-14 13:59:36 [info]: Request completed
+2026-05-14 13:59:36 [info]: Request completed
+2026-05-14 14:00:28 [error]: Error: An account with this email already exists.
+    at Module.register (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/authService.js:54:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/authController.js:14:47
+2026-05-14 14:00:28 [warn]: Request failed
+2026-05-14 14:00:38 [info]: Request completed
+2026-05-14 14:00:38 [info]: Request completed
+2026-05-14 14:00:38 [info]: Request completed
+2026-05-14 14:00:43 [info]: Request completed
+2026-05-14 14:00:43 [info]: Request completed
+2026-05-14 14:00:44 [info]: Request completed
+2026-05-14 14:00:58 [info]: Request completed
+2026-05-14 14:01:02 [info]: Request completed
+2026-05-14 14:01:25 [info]: Request completed
+2026-05-14 14:01:51 [info]: Request completed
+2026-05-14 14:01:51 [info]: Request completed
+2026-05-14 14:01:54 [info]: Request completed
+2026-05-14 14:01:54 [info]: Request completed
+2026-05-14 14:01:55 [error]: Error: Patient not found or access denied.
+    at Module.getPatientDetail (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/doctorService.js:194:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/doctorController.js:31:18
+2026-05-14 14:01:55 [warn]: Request failed
+2026-05-14 14:01:56 [error]: Error: Patient not found or access denied.
+    at Module.getPatientDetail (file:///home/ehtisham/Desktop/Projects/caresync/backend/src/services/doctorService.js:194:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///home/ehtisham/Desktop/Projects/caresync/backend/src/controllers/doctorController.js:31:18
+2026-05-14 14:01:56 [warn]: Request failed
+2026-05-14 14:02:00 [info]: Request completed
+2026-05-14 14:02:00 [info]: Request completed
