@@ -259,4 +259,72 @@ Medical term: "${term}"`,
   return response.text();
 };
 
-export default { generateSOAP, generatePreVisitBrief, chatWithContext, explainMedicalTerm };
+/**
+ * Translate clinical/medical text into simple, patient-friendly layperson language in a target language.
+ */
+export const translateMedicalText = async (text, targetLanguage) => {
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+  const result = await model.generateContent([
+    {
+      text: `You are a professional medical translator. Your job is to translate the following medical instructions, notes, or plan into simple, patient-friendly, and highly accurate ${targetLanguage}.
+      
+Guidelines:
+1. Explain any complex clinical terms in simple, plain terms that an ordinary patient can understand.
+2. Keep the translation warm, supportive, and extremely clear.
+3. Match the original formatting (like bullets or numbered steps) as closely as possible.
+4. If some terms don't translate directly, use the most appropriate local equivalent.
+
+Text to translate:
+"${text}"`,
+    },
+  ]);
+
+  const response = await result.response;
+  return response.text();
+};
+
+/**
+ * Translate clinical/medical text in a JSON object structure into simple, patient-friendly language.
+ */
+export const translateMedicalObject = async (contentObj, targetLanguage) => {
+  const model = genAI.getGenerativeModel({ 
+    model: 'gemini-2.5-flash',
+    generationConfig: { responseMimeType: 'application/json' },
+  });
+
+  const result = await model.generateContent([
+    {
+      text: `You are a professional medical translator. Translate the string values of the following JSON object into simple, patient-friendly, and highly accurate ${targetLanguage}.
+      
+Guidelines:
+1. Explain any complex clinical terms in simple, plain terms.
+2. Keep the translation warm, supportive, and extremely clear.
+3. Keep the exact same JSON structure and keys. Return ONLY valid JSON.
+
+JSON to translate:
+${JSON.stringify(contentObj)}`,
+    },
+  ]);
+
+  const response = await result.response;
+  try {
+    const parsed = JSON.parse(response.text());
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+      throw new Error('AI response is not a valid JSON object');
+    }
+    
+    const expectedKeys = Object.keys(contentObj);
+    const hasMatchingKeys = expectedKeys.some(key => key in parsed);
+    if (!hasMatchingKeys && expectedKeys.length > 0) {
+      throw new Error('AI response structure does not match expected keys');
+    }
+    
+    return parsed;
+  } catch (error) {
+    logger.error('Failed to validate translated JSON', { error: error.message });
+    throw new ApiError(500, 'Translation formatting failed', ERROR_CODES.AI_SERVICE_ERROR);
+  }
+};
+
+export default { generateSOAP, generatePreVisitBrief, chatWithContext, explainMedicalTerm, translateMedicalText, translateMedicalObject };

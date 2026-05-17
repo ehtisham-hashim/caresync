@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Home, Activity, Pill, Calendar, MessageCircle, FileText } from 'lucide-react';
+import { Home, Activity, Pill, Calendar, MessageCircle, FileText, ClipboardList } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import Navbar from './Navbar';
 
@@ -7,6 +7,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Health & Vitals', href: '/health/vitals', icon: Activity },
   { name: 'Prescriptions', href: '/health/prescriptions', icon: Pill },
+  { name: 'Visit History', href: '/health/history', icon: ClipboardList },
   { name: 'Appointments', href: '/appointments', icon: Calendar },
   { name: 'AI Companion', href: '/chat', icon: MessageCircle },
   { name: 'Submit Report', href: '/reports/new', icon: FileText },

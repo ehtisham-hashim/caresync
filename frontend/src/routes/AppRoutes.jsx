@@ -14,6 +14,7 @@ import SubmitReportPage from '../pages/SubmitReportPage';
 import AppointmentsPage from '../pages/AppointmentsPage';
 import PrescriptionsPage from '../pages/PrescriptionsPage';
 import VitalsPage from '../pages/VitalsPage';
+import PatientVisitsPage from '../pages/PatientVisitsPage';
 
 // Doctor Pages
 import DoctorDashboard from '../pages/provider/DoctorDashboard';
@@ -21,6 +22,7 @@ import PatientDirectory from '../pages/provider/PatientDirectory';
 import ScribeConsole from '../pages/provider/ScribeConsole';
 import DoctorReports from '../pages/provider/DoctorReports';
 import DoctorCalendar from '../pages/provider/DoctorCalendar';
+import DoctorVisitsPage from '../pages/DoctorVisitsPage';
 
 export default function AppRoutes() {
   return (
@@ -36,6 +38,7 @@ export default function AppRoutes() {
           <Route path="/dashboard" element={<PatientDashboard />} />
           <Route path="/health/vitals" element={<VitalsPage />} />
           <Route path="/health/prescriptions" element={<PrescriptionsPage />} />
+          <Route path="/health/history" element={<PatientVisitsPage />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/reports/new" element={<SubmitReportPage />} />
@@ -51,6 +54,8 @@ export default function AppRoutes() {
           <Route path="/provider/scribe/:patientId?" element={<ScribeConsole />} />
           <Route path="/provider/reports" element={<DoctorReports />} />
           <Route path="/provider/calendar" element={<DoctorCalendar />} />
+          <Route path="/provider/visits" element={<DoctorVisitsPage />} />
+          <Route path="/provider/visits/:visitId" element={<DoctorVisitsPage />} />
         </Route>
       </Route>
       

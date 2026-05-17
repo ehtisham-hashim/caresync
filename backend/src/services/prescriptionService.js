@@ -7,16 +7,45 @@ import { logAction } from './auditService.js';
  * Create a new prescription and auto-generate MedicationSchedule entries.
  */
 export const createPrescription = async (data, doctorId) => {
+  let visitId = data.visitId;
+  
+  if (!visitId) {
+    // Find the latest active visit for this patient and doctor
+    const latestVisit = await prisma.visit.findFirst({
+      where: { patientId: data.patientId, doctorId, deletedAt: null },
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    if (latestVisit) {
+      visitId = latestVisit.id;
+    } else {
+      // Create a default visit record
+      const defaultVisit = await prisma.visit.create({
+        data: {
+          patientId: data.patientId,
+          doctorId,
+          rawTranscript: 'Prescription added directly from Patient Directory.',
+          subjective: 'Patient visited to obtain structured prescriptions.',
+          objective: 'Vitals stable.',
+          assessment: 'Routine prescription review.',
+          plan: `Prescribed ${data.medicineName} (${data.dosage}).`,
+        }
+      });
+      visitId = defaultVisit.id;
+    }
+  }
+
   const prescription = await prisma.prescription.create({
     data: {
       patientId: data.patientId,
       doctorId,
-      visitId: data.visitId,
+      visitId,
       medicineName: data.medicineName,
       dosage: data.dosage,
       frequency: data.frequency,
       duration: data.duration,
       notes: data.notes || null,
+      simplifiedInstructions: data.simplifiedInstructions || `Take ${data.dosage} of ${data.medicineName} (${data.frequency}) for ${data.duration}.`,
     },
   });
 

@@ -1,11 +1,13 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, Calendar, Mic, FileText } from 'lucide-react';
+import { LayoutDashboard, Users, Calendar, Mic, FileText, ClipboardList } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import Navbar from './Navbar';
 
 const navigation = [
   { name: 'Dashboard', href: '/provider/dashboard', icon: LayoutDashboard },
   { name: 'Patients', href: '/provider/patients', icon: Users },
+  { name: 'AI Scribe', href: '/provider/scribe', icon: Mic },
+  { name: 'Visits', href: '/provider/visits', icon: ClipboardList },
   { name: 'Calendar', href: '/provider/calendar', icon: Calendar },
   { name: 'Reports', href: '/provider/reports', icon: FileText },
 ];

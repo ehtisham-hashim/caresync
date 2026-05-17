@@ -1,18 +1,29 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { scribeService } from '../services/scribeService';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Loader from '../components/common/Loader';
-import { FileText, User, Calendar } from 'lucide-react';
-import { formatDate } from '../utils/formatDate';
+import { FileText, User, Calendar, X, Pill, Heart, Clock, AlertCircle } from 'lucide-react';
+import { formatDate, formatDateTime } from '../utils/formatDate';
 
 export default function DoctorVisitsPage() {
   const navigate = useNavigate();
+  const { visitId } = useParams();
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get('patientId');
   const [page, setPage] = useState(1);
+
+  // Fetch specific visit details when visitId is present in URL
+  const { data: visitDetail, isLoading: isLoadingDetail } = useQuery({
+    queryKey: ['visit-detail', visitId],
+    queryFn: async () => {
+      const response = await scribeService.getVisitDetail(visitId);
+      return response.data;
+    },
+    enabled: !!visitId,
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: patientId ? ['patient-visits', patientId, page] : ['doctor-visits', page],
@@ -78,7 +89,7 @@ export default function DoctorVisitsPage() {
                       </h3>
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
                         <Calendar className="h-3 w-3 mr-1" />
-                        {formatDate(visit.createdAt, 'date')}
+                        {formatDate(visit.createdAt)}
                       </span>
                     </div>
 
@@ -162,6 +173,154 @@ export default function DoctorVisitsPage() {
             >
               Next
             </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Premium Detail Modal for Doctor */}
+      {visitId && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+            
+            {/* Modal Header */}
+            <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100 flex items-center justify-between shrink-0">
+              <div className="flex items-center space-x-3">
+                <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                  VT
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Visit Consultation Record
+                  </h2>
+                  <p className="text-xs text-gray-500">
+                    Patient: {visitDetail?.patient?.name || 'Unknown Patient'} • {visitDetail && formatDateTime(visitDetail.createdAt)}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate(patientId ? `/provider/visits?patientId=${patientId}` : '/provider/visits')}
+                className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto space-y-6 flex-1">
+              {isLoadingDetail ? (
+                <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                  <Loader size="lg" />
+                  <p className="text-sm text-gray-500 font-medium animate-pulse">
+                    Retrieving clinical records...
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* SOAP fields */}
+                  <div className="grid gap-6">
+                    {visitDetail?.subjective && (
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
+                          <User className="h-4 w-4 text-blue-500" /> Subjective (Patient Complaints & Symptoms)
+                        </h4>
+                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                          <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+                            {visitDetail.subjective}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {visitDetail?.objective && (
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
+                          <AlertCircle className="h-4 w-4 text-orange-500" /> Objective (Clinical Observations & Vitals)
+                        </h4>
+                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                          <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+                            {visitDetail.objective}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {visitDetail?.assessment && (
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
+                          <Heart className="h-4 w-4 text-red-500" /> Assessment (Clinical Diagnoses)
+                        </h4>
+                        <div className="bg-red-50/20 p-4 rounded-xl border border-red-100/50">
+                          <p className="text-gray-700 text-sm leading-relaxed">
+                            {visitDetail.assessment}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {visitDetail?.plan && (
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
+                          <Clock className="h-4 w-4 text-green-500" /> Plan & Treatment Instructions
+                        </h4>
+                        <div className="bg-blue-50/20 p-4 rounded-xl border border-blue-100/50">
+                          <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+                            {visitDetail.plan}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Prescribed Medicines */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
+                      <Pill className="h-4 w-4 text-indigo-500" /> Prescribed Medications
+                    </h4>
+                    {visitDetail?.prescriptions?.length > 0 ? (
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {visitDetail.prescriptions.map((rx) => (
+                          <div 
+                            key={rx.id} 
+                            className="bg-indigo-50/10 p-4 rounded-xl border border-indigo-100/50 flex flex-col justify-between space-y-2"
+                          >
+                            <div>
+                              <div className="flex justify-between items-start">
+                                <span className="font-bold text-gray-900 text-sm">{rx.medicineName}</span>
+                                <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">
+                                  {rx.duration}
+                                </span>
+                              </div>
+                              <p className="text-xs text-gray-600 mt-1 font-medium">Dosage: {rx.dosage}</p>
+                              <p className="text-xs text-gray-500">Frequency: {rx.frequency}</p>
+                              {rx.notes && (
+                                <p className="text-xs text-gray-400 mt-1 italic">
+                                  "{rx.notes}"
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 text-center text-xs text-gray-500">
+                        No specific medications were registered in this visit.
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end shrink-0">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => navigate(patientId ? `/provider/visits?patientId=${patientId}` : '/provider/visits')}
+              >
+                Close Record
+              </Button>
+            </div>
           </div>
         </div>
       )}
