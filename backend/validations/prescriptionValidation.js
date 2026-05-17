@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const createPrescriptionSchema = z.object({
   patientId: z.string().uuid('Invalid patient ID.'),
-  visitId: z.string().uuid('Invalid visit ID.'),
+  visitId: z.string().uuid('Invalid visit ID.').optional(),
   medicineName: z.string().min(1, 'Medicine name is required.'),
   dosage: z.string().min(1, 'Dosage is required.'),
   frequency: z.string().min(1, 'Frequency is required.'),
