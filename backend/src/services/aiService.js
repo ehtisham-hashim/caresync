@@ -259,4 +259,29 @@ Medical term: "${term}"`,
   return response.text();
 };
 
-export default { generateSOAP, generatePreVisitBrief, chatWithContext, explainMedicalTerm };
+/**
+ * Translate clinical/medical text into simple, patient-friendly layperson language in a target language.
+ */
+export const translateMedicalText = async (text, targetLanguage) => {
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+  const result = await model.generateContent([
+    {
+      text: `You are a professional medical translator. Your job is to translate the following medical instructions, notes, or plan into simple, patient-friendly, and highly accurate ${targetLanguage}.
+      
+Guidelines:
+1. Explain any complex clinical terms in simple, plain terms that an ordinary patient can understand.
+2. Keep the translation warm, supportive, and extremely clear.
+3. Match the original formatting (like bullets or numbered steps) as closely as possible.
+4. If some terms don't translate directly, use the most appropriate local equivalent.
+
+Text to translate:
+"${text}"`,
+    },
+  ]);
+
+  const response = await result.response;
+  return response.text();
+};
+
+export default { generateSOAP, generatePreVisitBrief, chatWithContext, explainMedicalTerm, translateMedicalText };

@@ -14,6 +14,7 @@ import SubmitReportPage from '../pages/SubmitReportPage';
 import AppointmentsPage from '../pages/AppointmentsPage';
 import PrescriptionsPage from '../pages/PrescriptionsPage';
 import VitalsPage from '../pages/VitalsPage';
+import PatientVisitsPage from '../pages/PatientVisitsPage';
 
 // Doctor Pages
 import DoctorDashboard from '../pages/provider/DoctorDashboard';
@@ -36,6 +37,7 @@ export default function AppRoutes() {
           <Route path="/dashboard" element={<PatientDashboard />} />
           <Route path="/health/vitals" element={<VitalsPage />} />
           <Route path="/health/prescriptions" element={<PrescriptionsPage />} />
+          <Route path="/health/history" element={<PatientVisitsPage />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/reports/new" element={<SubmitReportPage />} />

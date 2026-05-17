@@ -12,3 +12,12 @@ export const explainMedicalTerm = asyncHandler(async (req, res) => {
   const explanation = await aiService.explainMedicalTerm(req.body.term);
   sendSuccess(res, 200, 'Term explained.', { explanation });
 });
+
+export const translateContent = asyncHandler(async (req, res) => {
+  const { text, targetLanguage } = req.body;
+  if (!text || !targetLanguage) {
+    return res.status(400).json({ success: false, message: 'Text and targetLanguage are required.' });
+  }
+  const translation = await aiService.translateMedicalText(text, targetLanguage);
+  sendSuccess(res, 200, 'Text translated successfully.', { translation });
+});
