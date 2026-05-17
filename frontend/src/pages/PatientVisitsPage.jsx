@@ -139,6 +139,11 @@ export default function PatientVisitsPage() {
         plan: visitDetail?.plan || '',
         subjective: visitDetail?.subjective || '',
         objective: visitDetail?.objective || '',
+        medicalTerms: visitDetail?.medicalTerms || [],
+        prescriptions: visitDetail?.prescriptions?.map(rx => ({
+          id: rx.id,
+          simplifiedInstructions: rx.simplifiedInstructions || ''
+        })) || []
       };
 
       const { data } = await api.post('/chat/translate', {
@@ -168,6 +173,14 @@ export default function PatientVisitsPage() {
     setTargetLanguage('');
     setTranslatedData(null);
   };
+
+  const isRTL = targetLanguage === 'Urdu' || targetLanguage === 'Arabic';
+  const languageContainerStyle = isRTL ? {
+    fontFamily: '"Noto Nastaliq Urdu", serif',
+    lineHeight: '2.5',
+    direction: 'rtl',
+  } : {};
+  const isUrdu = targetLanguage === 'Urdu';
 
   return (
     <div className="space-y-6">
@@ -319,14 +332,18 @@ export default function PatientVisitsPage() {
               </div>
               <button
                 onClick={handleCloseDetailModal}
-                className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors bg-gray-100 shadow-sm"
+                aria-label="Close"
               >
-                <X className="h-6 w-6" />
+                <X className="h-7 w-7" />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-6 flex-1">
+            <div 
+              className="p-6 overflow-y-auto space-y-6 flex-1"
+              style={languageContainerStyle}
+            >
               {isLoadingDetail ? (
                 <div className="flex flex-col items-center justify-center py-20 space-y-4">
                   <Loader size="lg" />
@@ -435,10 +452,10 @@ export default function PatientVisitsPage() {
                             </div>
                             
                             {/* Simplified Instructions by AI */}
-                            {rx.simplifiedInstructions && (
+                            {(translatedData?.prescriptions?.find(p => p.id === rx.id)?.simplifiedInstructions || rx.simplifiedInstructions) && (
                               <div className="mt-2 pt-2 border-t border-indigo-100/20 bg-indigo-50/20 p-2 rounded text-xs text-indigo-900">
                                 <span className="font-bold block text-[10px] uppercase text-indigo-700 mb-0.5">{t('Simple Instructions:', 'simple')}</span>
-                                {rx.simplifiedInstructions}
+                                {translatedData?.prescriptions?.find(p => p.id === rx.id)?.simplifiedInstructions || rx.simplifiedInstructions}
                               </div>
                             )}
                           </div>
@@ -452,20 +469,20 @@ export default function PatientVisitsPage() {
                   </div>
 
                   {/* Medical Terms Tap-to-Explain Section */}
-                  {visitDetail?.medicalTerms && JSON.parse(JSON.stringify(visitDetail.medicalTerms)).length > 0 && (
+                  {(translatedData?.medicalTerms || visitDetail?.medicalTerms) && JSON.parse(JSON.stringify(translatedData?.medicalTerms || visitDetail.medicalTerms)).length > 0 && (
                     <div className="space-y-2">
                       <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
                         <AlertCircle className="h-4 w-4 text-emerald-500" /> {t('Health Terminology Guide', 'guide')}
                       </h4>
                       <div className="bg-emerald-50/10 p-4 rounded-xl border border-emerald-100/50">
-                        <p className="text-xs text-gray-500 mb-3">
+                        <p className={`text-xs text-gray-500 mb-3 ${isUrdu ? 'text-sm' : ''}`}>
                           {t('Tap or read definitions of medical jargon discussed in your consult:', 'tap')}
                         </p>
                         <div className="grid gap-2.5 sm:grid-cols-2">
-                          {JSON.parse(JSON.stringify(visitDetail.medicalTerms)).map((termObj, index) => (
+                          {JSON.parse(JSON.stringify(translatedData?.medicalTerms || visitDetail.medicalTerms)).map((termObj, index) => (
                             <div key={index} className="p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
-                              <span className="font-bold text-xs text-emerald-700 block">{termObj.term}</span>
-                              <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                              <span className={`font-bold text-emerald-700 block ${isUrdu ? 'text-base' : 'text-xs'}`}>{termObj.term}</span>
+                              <p className={`text-gray-600 mt-1 ${isUrdu ? 'text-sm leading-[2.5]' : 'text-xs leading-relaxed'}`}>
                                 {termObj.meaning}
                               </p>
                             </div>
@@ -483,16 +500,16 @@ export default function PatientVisitsPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       {visitDetail?.subjective && (
                         <div className="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                          <span className="font-bold text-xs text-gray-700 block mb-1">{t('Subjective (My symptoms & history)', 'sub')}</span>
-                          <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap">
+                          <span className={`font-bold text-gray-700 block mb-1 ${isUrdu ? 'text-sm' : 'text-xs'}`}>{t('Subjective (My symptoms & history)', 'sub')}</span>
+                          <p className={`text-gray-600 whitespace-pre-wrap ${isUrdu ? 'text-sm leading-[2.5]' : 'text-xs leading-relaxed'}`}>
                             {translatedData?.subjective || visitDetail.subjective}
                           </p>
                         </div>
                       )}
                       {visitDetail?.objective && (
                         <div className="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                          <span className="font-bold text-xs text-gray-700 block mb-1">{t('Objective (Observable & Vitals)', 'obj')}</span>
-                          <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap">
+                          <span className={`font-bold text-gray-700 block mb-1 ${isUrdu ? 'text-sm' : 'text-xs'}`}>{t('Objective (Observable & Vitals)', 'obj')}</span>
+                          <p className={`text-gray-600 whitespace-pre-wrap ${isUrdu ? 'text-sm leading-[2.5]' : 'text-xs leading-relaxed'}`}>
                             {translatedData?.objective || visitDetail.objective}
                           </p>
                         </div>
