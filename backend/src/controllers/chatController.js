@@ -14,10 +14,20 @@ export const explainMedicalTerm = asyncHandler(async (req, res) => {
 });
 
 export const translateContent = asyncHandler(async (req, res) => {
-  const { text, targetLanguage } = req.body;
-  if (!text || !targetLanguage) {
-    return res.status(400).json({ success: false, message: 'Text and targetLanguage are required.' });
+  const { text, obj, targetLanguage } = req.body;
+  if (!targetLanguage) {
+    return res.status(400).json({ success: false, message: 'targetLanguage is required.' });
   }
-  const translation = await aiService.translateMedicalText(text, targetLanguage);
-  sendSuccess(res, 200, 'Text translated successfully.', { translation });
+
+  if (obj) {
+    const translation = await aiService.translateMedicalObject(obj, targetLanguage);
+    return sendSuccess(res, 200, 'Object translated successfully.', { translation });
+  }
+
+  if (text) {
+    const translation = await aiService.translateMedicalText(text, targetLanguage);
+    return sendSuccess(res, 200, 'Text translated successfully.', { translation });
+  }
+
+  return res.status(400).json({ success: false, message: 'Either text or obj is required.' });
 });

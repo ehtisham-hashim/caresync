@@ -284,4 +284,36 @@ Text to translate:
   return response.text();
 };
 
-export default { generateSOAP, generatePreVisitBrief, chatWithContext, explainMedicalTerm, translateMedicalText };
+/**
+ * Translate clinical/medical text in a JSON object structure into simple, patient-friendly language.
+ */
+export const translateMedicalObject = async (contentObj, targetLanguage) => {
+  const model = genAI.getGenerativeModel({ 
+    model: 'gemini-2.5-flash',
+    generationConfig: { responseMimeType: 'application/json' },
+  });
+
+  const result = await model.generateContent([
+    {
+      text: `You are a professional medical translator. Translate the string values of the following JSON object into simple, patient-friendly, and highly accurate ${targetLanguage}.
+      
+Guidelines:
+1. Explain any complex clinical terms in simple, plain terms.
+2. Keep the translation warm, supportive, and extremely clear.
+3. Keep the exact same JSON structure and keys. Return ONLY valid JSON.
+
+JSON to translate:
+${JSON.stringify(contentObj)}`,
+    },
+  ]);
+
+  const response = await result.response;
+  try {
+    return JSON.parse(response.text());
+  } catch (error) {
+    logger.error('Failed to parse translated JSON', { error: error.message });
+    throw new ApiError(500, 'Translation formatting failed', ERROR_CODES.AI_SERVICE_ERROR);
+  }
+};
+
+export default { generateSOAP, generatePreVisitBrief, chatWithContext, explainMedicalTerm, translateMedicalText, translateMedicalObject };
