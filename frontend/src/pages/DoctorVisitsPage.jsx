@@ -6,7 +6,7 @@ import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Loader from '../components/common/Loader';
 import { FileText, User, Calendar, X, Pill, Heart, Clock, AlertCircle } from 'lucide-react';
-import { formatDate } from '../utils/formatDate';
+import { formatDate, formatDateTime } from '../utils/formatDate';
 
 export default function DoctorVisitsPage() {
   const navigate = useNavigate();
@@ -89,7 +89,7 @@ export default function DoctorVisitsPage() {
                       </h3>
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
                         <Calendar className="h-3 w-3 mr-1" />
-                        {formatDate(visit.createdAt, 'date')}
+                        {formatDate(visit.createdAt)}
                       </span>
                     </div>
 
@@ -193,7 +193,7 @@ export default function DoctorVisitsPage() {
                     Visit Consultation Record
                   </h2>
                   <p className="text-xs text-gray-500">
-                    Patient: {visitDetail?.patient?.name || 'Unknown Patient'} • {visitDetail && formatDate(visitDetail.createdAt, 'full')}
+                    Patient: {visitDetail?.patient?.name || 'Unknown Patient'} • {visitDetail && formatDateTime(visitDetail.createdAt)}
                   </p>
                 </div>
               </div>

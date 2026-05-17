@@ -19,7 +19,7 @@ import {
   Clock, 
   AlertCircle 
 } from 'lucide-react';
-import { formatDate } from '../utils/formatDate';
+import { formatDate, formatDateTime } from '../utils/formatDate';
 import toast from 'react-hot-toast';
 
 export default function PatientVisitsPage() {
@@ -139,7 +139,7 @@ export default function PatientVisitsPage() {
                   </div>
                   <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">
                     <Calendar className="h-3.5 w-3.5 mr-1" />
-                    {formatDate(visit.createdAt, 'date')}
+                    {formatDate(visit.createdAt)}
                   </span>
                 </div>
 
@@ -241,7 +241,7 @@ export default function PatientVisitsPage() {
                     Consultation Instructions
                   </h2>
                   <p className="text-xs text-gray-500">
-                    Dr. {visitDetail?.doctor?.name || 'CareSync Provider'} • {visitDetail && formatDate(visitDetail.createdAt, 'full')}
+                    Dr. {visitDetail?.doctor?.name || 'CareSync Provider'} • {visitDetail && formatDateTime(visitDetail.createdAt)}
                   </p>
                 </div>
               </div>
