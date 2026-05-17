@@ -22,6 +22,7 @@ import PatientDirectory from '../pages/provider/PatientDirectory';
 import ScribeConsole from '../pages/provider/ScribeConsole';
 import DoctorReports from '../pages/provider/DoctorReports';
 import DoctorCalendar from '../pages/provider/DoctorCalendar';
+import DoctorVisitsPage from '../pages/DoctorVisitsPage';
 
 export default function AppRoutes() {
   return (
@@ -53,6 +54,8 @@ export default function AppRoutes() {
           <Route path="/provider/scribe/:patientId?" element={<ScribeConsole />} />
           <Route path="/provider/reports" element={<DoctorReports />} />
           <Route path="/provider/calendar" element={<DoctorCalendar />} />
+          <Route path="/provider/visits" element={<DoctorVisitsPage />} />
+          <Route path="/provider/visits/:visitId" element={<DoctorVisitsPage />} />
         </Route>
       </Route>
       
