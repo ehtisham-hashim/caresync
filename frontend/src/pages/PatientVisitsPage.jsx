@@ -140,8 +140,9 @@ export default function PatientVisitsPage() {
         subjective: visitDetail?.subjective || '',
         objective: visitDetail?.objective || '',
         medicalTerms: visitDetail?.medicalTerms || [],
-        prescriptions: visitDetail?.prescriptions?.map(rx => ({
-          id: rx.id,
+        prescriptions: visitDetail?.prescriptions?.map((rx, index) => ({
+          originalId: rx.id,
+          listIndex: index,
           simplifiedInstructions: rx.simplifiedInstructions || ''
         })) || []
       };
@@ -452,10 +453,10 @@ export default function PatientVisitsPage() {
                             </div>
                             
                             {/* Simplified Instructions by AI */}
-                            {(translatedData?.prescriptions?.find(p => p.id === rx.id)?.simplifiedInstructions || rx.simplifiedInstructions) && (
+                            {(translatedData?.prescriptions?.find(p => p.originalId === rx.id || p.listIndex === index)?.simplifiedInstructions || rx.simplifiedInstructions) && (
                               <div className="mt-2 pt-2 border-t border-indigo-100/20 bg-indigo-50/20 p-2 rounded text-xs text-indigo-900">
                                 <span className="font-bold block text-[10px] uppercase text-indigo-700 mb-0.5">{t('Simple Instructions:', 'simple')}</span>
-                                {translatedData?.prescriptions?.find(p => p.id === rx.id)?.simplifiedInstructions || rx.simplifiedInstructions}
+                                {translatedData?.prescriptions?.find(p => p.originalId === rx.id || p.listIndex === index)?.simplifiedInstructions || rx.simplifiedInstructions}
                               </div>
                             )}
                           </div>

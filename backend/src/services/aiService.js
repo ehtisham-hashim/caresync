@@ -309,9 +309,20 @@ ${JSON.stringify(contentObj)}`,
 
   const response = await result.response;
   try {
-    return JSON.parse(response.text());
+    const parsed = JSON.parse(response.text());
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+      throw new Error('AI response is not a valid JSON object');
+    }
+    
+    const expectedKeys = Object.keys(contentObj);
+    const hasMatchingKeys = expectedKeys.some(key => key in parsed);
+    if (!hasMatchingKeys && expectedKeys.length > 0) {
+      throw new Error('AI response structure does not match expected keys');
+    }
+    
+    return parsed;
   } catch (error) {
-    logger.error('Failed to parse translated JSON', { error: error.message });
+    logger.error('Failed to validate translated JSON', { error: error.message });
     throw new ApiError(500, 'Translation formatting failed', ERROR_CODES.AI_SERVICE_ERROR);
   }
 };

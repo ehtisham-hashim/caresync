@@ -18,6 +18,7 @@ export default function ScribeConsole() {
   const [liveCaptions, setLiveCaptions] = useState('');
   const [interimCaption, setInterimCaption] = useState('');
   const [recognitionInstance, setRecognitionInstance] = useState(null);
+  const [isRecognitionActive, setIsRecognitionActive] = useState(false);
   const [isSpeechSupported, setIsSpeechSupported] = useState(true);
 
   // Fetch Patient Details
@@ -40,12 +41,13 @@ export default function ScribeConsole() {
 
   // Initialize Speech Recognition
   useEffect(() => {
+    let rec = null;
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
-      const rec = new SpeechRecognition();
+      rec = new SpeechRecognition();
       rec.continuous = true;
       rec.interimResults = true;
-      rec.lang = 'en-US'; // English is primary, supports mixed accents
+      rec.lang = 'en-US';
 
       rec.onresult = (event) => {
         let interim = '';
@@ -67,19 +69,37 @@ export default function ScribeConsole() {
 
       rec.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
+        setIsRecognitionActive(false);
       };
+
+      rec.onstart = () => setIsRecognitionActive(true);
+      rec.onend = () => setIsRecognitionActive(false);
 
       setRecognitionInstance(rec);
     } else {
       setIsSpeechSupported(false);
     }
+
+    return () => {
+      if (rec) {
+        try {
+          rec.stop();
+          if (rec.abort) rec.abort();
+        } catch (e) {}
+        rec.onresult = null;
+        rec.onerror = null;
+        rec.onstart = null;
+        rec.onend = null;
+      }
+      setRecognitionInstance(null);
+    };
   }, []);
 
   // Sync Speech Recognition with Recorder Status
   useEffect(() => {
     if (!recognitionInstance) return;
 
-    if (status === 'recording') {
+    if (status === 'recording' && !isRecognitionActive) {
       setLiveCaptions('');
       setInterimCaption('');
       try {
@@ -87,14 +107,14 @@ export default function ScribeConsole() {
       } catch (err) {
         console.error('Speech recognition start error:', err);
       }
-    } else if (status === 'stopped' || status === 'idle') {
+    } else if ((status === 'stopped' || status === 'idle') && isRecognitionActive) {
       try {
         recognitionInstance.stop();
       } catch (err) {
         // Recognition might already be stopped
       }
     }
-  }, [status, recognitionInstance]);
+  }, [status, recognitionInstance, isRecognitionActive]);
 
   const handleProcessAudio = async () => {
     if (!mediaBlobUrl) return;

@@ -106,9 +106,9 @@ export default function PatientDirectory() {
         patientId: selectedPatient.id,
         medicineName: medicineName.trim(),
         dosage: dosage.trim(),
-        frequency: `${frequency} ${timeDetailStr}`,
+        frequency: frequency,
         duration: duration.trim(),
-        notes: notes.trim(),
+        notes: notes.trim() ? `${notes.trim()}\nSchedule Details: ${timeDetailStr}` : `Schedule Details: ${timeDetailStr}`,
       };
 
       await api.post('/prescriptions', payload);
