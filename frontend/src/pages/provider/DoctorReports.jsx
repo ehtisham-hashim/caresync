@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { formatDateTime } from '../../utils/formatDate';
 
 export default function DoctorReports() {
-  const { data: reports, refetch, isLoading, isError, error } = useQuery({
+  const { data: reportsData, refetch, isLoading, isError, error } = useQuery({
     queryKey: ['doctor-reports'],
     queryFn: async () => {
       const { data } = await api.get('/reports/doctor');
@@ -15,14 +15,12 @@ export default function DoctorReports() {
     },
   });
 
-  const handleUpdateStatus = async (id, status) => {
+  const reports = reportsData?.reports || [];
+
+  const handleUpdateStatus = async (id) => {
     try {
-      if (status === 'REVIEWED') {
-        await api.put(`/reports/${id}/review`);
-      } else {
-        await api.patch(`/reports/${id}`, { status }); // fallback if added later
-      }
-      toast.success(`Report marked as ${status.toLowerCase()}`);
+      await api.put(`/reports/${id}/review`);
+      toast.success('Report marked as reviewed');
       refetch();
     } catch (error) {
       toast.error('Failed to update status');
@@ -65,9 +63,9 @@ export default function DoctorReports() {
                       {report.severity}
                     </span>
                     <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase
-                      ${report.status === 'REVIEWED' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-700'}
+                      ${report.isReviewed ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-700'}
                     `}>
-                      {report.status}
+                      {report.isReviewed ? 'REVIEWED' : 'PENDING'}
                     </span>
                   </div>
                   
@@ -81,8 +79,8 @@ export default function DoctorReports() {
                 </div>
 
                 <div className="flex items-start md:justify-end gap-2 shrink-0">
-                  {report.status === 'PENDING' && (
-                    <Button onClick={() => handleUpdateStatus(report.id, 'REVIEWED')} size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                  {!report.isReviewed && (
+                    <Button onClick={() => handleUpdateStatus(report.id)} size="sm" className="bg-emerald-600 hover:bg-emerald-700">
                       <CheckCircle className="h-4 w-4 mr-2" /> Mark Reviewed
                     </Button>
                   )}

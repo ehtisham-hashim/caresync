@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { formatDate, formatDateTime } from '../utils/formatDate';
 import toast from 'react-hot-toast';
+import { cn } from '../utils/cn';
 
 const uiTranslations = {
   Urdu: {
@@ -213,7 +214,7 @@ export default function PatientVisitsPage() {
                 {/* Visit Summary Card Header */}
                 <div className="flex items-start justify-between border-b border-gray-100 pb-4 mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md">
+                    <div className="h-10 w-10 rounded-full bg-linear-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md">
                       {visit.doctor?.name?.charAt(0) || 'D'}
                     </div>
                     <div>
@@ -314,10 +315,10 @@ export default function PatientVisitsPage() {
       {/* Premium Glassmorphic Detail Modal */}
       {selectedVisitId && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+          <div className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
             
             {/* Modal Header */}
-            <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100 flex items-center justify-between shrink-0">
+            <div className="px-6 py-4 bg-linear-to-r from-blue-50 to-indigo-50 border-b border-gray-100 flex items-center justify-between shrink-0">
               <div className="flex items-center space-x-3">
                 <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white">
                   <FileCheck className="h-5 w-5" />
@@ -342,7 +343,7 @@ export default function PatientVisitsPage() {
 
             {/* Modal Body */}
             <div 
-              className="p-6 overflow-y-auto space-y-6 flex-1"
+              className="p-6 overflow-y-auto space-y-6 flex-1 scrollbar-thin"
               style={languageContainerStyle}
             >
               {isLoadingDetail ? (
@@ -355,7 +356,10 @@ export default function PatientVisitsPage() {
               ) : (
                 <>
                   {/* AI Translation Module */}
-                  <div className="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-4 border border-violet-100/50 shadow-sm">
+                  <div 
+                    className="bg-linear-to-r from-violet-50 to-purple-50 rounded-xl p-4 border border-violet-100/50 shadow-sm"
+                    style={{ direction: 'ltr', fontFamily: 'sans-serif', lineHeight: 'normal' }}
+                  >
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center space-x-2">
                         <div className="p-2 rounded-lg bg-violet-100 text-violet-700">
@@ -403,7 +407,7 @@ export default function PatientVisitsPage() {
                         <Heart className="h-4 w-4 text-red-500" /> {t('Diagnosis & Assessment', 'diagnosis')}
                       </h4>
                       <div className="bg-red-50/20 p-4 rounded-xl border border-red-100/50">
-                        <p className="text-gray-700 text-sm leading-relaxed">
+                        <p className={cn("text-gray-700", isUrdu ? 'clinical-content-ur' : 'clinical-content-en')}>
                           {translatedData?.assessment || visitDetail.assessment}
                         </p>
                       </div>
@@ -417,14 +421,14 @@ export default function PatientVisitsPage() {
                         <Clock className="h-4 w-4 text-blue-500" /> {t("Doctor's Plan & Instructions", 'plan')}
                       </h4>
                       <div className="bg-blue-50/20 p-4 rounded-xl border border-blue-100/50">
-                        <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+                        <p className={cn("text-gray-700 whitespace-pre-wrap", isUrdu ? 'clinical-content-ur' : 'clinical-content-en')}>
                           {translatedData?.plan || visitDetail.plan}
                         </p>
                       </div>
                     </div>
                   )}
 
-                  {/* Prescribed Medicines (Option 3 integration!) */}
+                  {/* Prescribed Medicines */}
                   <div className="space-y-2">
                     <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
                       <Pill className="h-4 w-4 text-indigo-500" /> {t('Prescribed Medications', 'meds')}
@@ -438,15 +442,15 @@ export default function PatientVisitsPage() {
                           >
                             <div>
                               <div className="flex justify-between items-start">
-                                <span className="font-bold text-gray-900 text-sm">{rx.medicineName}</span>
+                                <span className={cn("font-bold text-gray-900", isUrdu ? 'clinical-content-ur' : 'clinical-content-en')}>{rx.medicineName}</span>
                                 <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">
                                   {rx.duration}
                                 </span>
                               </div>
-                              <p className="text-xs text-gray-600 mt-1 font-medium">{t('Dosage:', 'dosage')} {rx.dosage}</p>
-                              <p className="text-xs text-gray-500">{t('Frequency:', 'freq')} {rx.frequency}</p>
+                              <p className={cn("text-gray-600 mt-1 font-medium", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>{t('Dosage:', 'dosage')} {rx.dosage}</p>
+                              <p className={cn("text-gray-500", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>{t('Frequency:', 'freq')} {rx.frequency}</p>
                               {rx.notes && (
-                                <p className="text-xs text-gray-400 mt-1 italic">
+                                <p className={cn("text-gray-400 mt-1 italic", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>
                                   "{rx.notes}"
                                 </p>
                               )}
@@ -454,7 +458,7 @@ export default function PatientVisitsPage() {
                             
                             {/* Simplified Instructions by AI */}
                             {(translatedData?.prescriptions?.find(p => p.originalId === rx.id || p.listIndex === index)?.simplifiedInstructions || rx.simplifiedInstructions) && (
-                              <div className="mt-2 pt-2 border-t border-indigo-100/20 bg-indigo-50/20 p-2 rounded text-xs text-indigo-900">
+                              <div className={cn("mt-2 pt-2 border-t border-indigo-100/20 bg-indigo-50/20 p-2 rounded text-indigo-900", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>
                                 <span className="font-bold block text-[10px] uppercase text-indigo-700 mb-0.5">{t('Simple Instructions:', 'simple')}</span>
                                 {translatedData?.prescriptions?.find(p => p.originalId === rx.id || p.listIndex === index)?.simplifiedInstructions || rx.simplifiedInstructions}
                               </div>
@@ -476,14 +480,14 @@ export default function PatientVisitsPage() {
                         <AlertCircle className="h-4 w-4 text-emerald-500" /> {t('Health Terminology Guide', 'guide')}
                       </h4>
                       <div className="bg-emerald-50/10 p-4 rounded-xl border border-emerald-100/50">
-                        <p className={`text-xs text-gray-500 mb-3 ${isUrdu ? 'text-sm' : ''}`}>
+                        <p className={cn("text-gray-500 mb-3", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>
                           {t('Tap or read definitions of medical jargon discussed in your consult:', 'tap')}
                         </p>
                         <div className="grid gap-2.5 sm:grid-cols-2">
                           {(translatedData?.medicalTerms || visitDetail.medicalTerms).map((termObj, index) => (
                             <div key={index} className="p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
-                              <span className={`font-bold text-emerald-700 block ${isUrdu ? 'text-base' : 'text-xs'}`}>{termObj.term}</span>
-                              <p className={`text-gray-600 mt-1 ${isUrdu ? 'text-sm leading-[2.5]' : 'text-xs leading-relaxed'}`}>
+                              <span className={cn("font-bold text-emerald-700 block", isUrdu ? 'clinical-content-ur' : 'clinical-content-en')}>{termObj.term}</span>
+                              <p className={cn("text-gray-600 mt-1", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>
                                 {termObj.meaning}
                               </p>
                             </div>
@@ -501,16 +505,16 @@ export default function PatientVisitsPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       {visitDetail?.subjective && (
                         <div className="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                          <span className={`font-bold text-gray-700 block mb-1 ${isUrdu ? 'text-sm' : 'text-xs'}`}>{t('Subjective (My symptoms & history)', 'sub')}</span>
-                          <p className={`text-gray-600 whitespace-pre-wrap ${isUrdu ? 'text-sm leading-[2.5]' : 'text-xs leading-relaxed'}`}>
+                          <span className={cn("font-bold text-gray-700 block mb-1", isUrdu ? 'clinical-content-ur' : 'clinical-content-en')}>{t('Subjective (My symptoms & history)', 'sub')}</span>
+                          <p className={cn("text-gray-600 whitespace-pre-wrap", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>
                             {translatedData?.subjective || visitDetail.subjective}
                           </p>
                         </div>
                       )}
                       {visitDetail?.objective && (
                         <div className="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                          <span className={`font-bold text-gray-700 block mb-1 ${isUrdu ? 'text-sm' : 'text-xs'}`}>{t('Objective (Observable & Vitals)', 'obj')}</span>
-                          <p className={`text-gray-600 whitespace-pre-wrap ${isUrdu ? 'text-sm leading-[2.5]' : 'text-xs leading-relaxed'}`}>
+                          <span className={cn("font-bold text-gray-700 block mb-1", isUrdu ? 'clinical-content-ur' : 'clinical-content-en')}>{t('Objective (Observable & Vitals)', 'obj')}</span>
+                          <p className={cn("text-gray-600 whitespace-pre-wrap", isUrdu ? 'clinical-text-ur' : 'clinical-text-en')}>
                             {translatedData?.objective || visitDetail.objective}
                           </p>
                         </div>

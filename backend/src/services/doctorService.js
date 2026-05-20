@@ -373,7 +373,6 @@ export const updateDoctorProfile = async (doctorId, data) => {
   return {
     user: await prisma.user.findUnique({
       where: { id: doctorId },
-      include: { doctorProfile: true },
       select: {
         id: true,
         name: true,

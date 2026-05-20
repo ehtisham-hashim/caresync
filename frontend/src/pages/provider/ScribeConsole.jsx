@@ -175,7 +175,7 @@ export default function ScribeConsole() {
             </div>
           ) : (
             <div className="flex items-center gap-2 text-gray-500 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
-              <span className="font-semibold text-xs capitalize uppercase tracking-wider">Status: {status}</span>
+              <span className="font-semibold text-xs uppercase tracking-wider">Status: {status}</span>
             </div>
           )}
         </div>

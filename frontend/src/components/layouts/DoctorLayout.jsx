@@ -6,7 +6,6 @@ import Navbar from './Navbar';
 const navigation = [
   { name: 'Dashboard', href: '/provider/dashboard', icon: LayoutDashboard },
   { name: 'Patients', href: '/provider/patients', icon: Users },
-  { name: 'AI Scribe', href: '/provider/scribe', icon: Mic },
   { name: 'Visits', href: '/provider/visits', icon: ClipboardList },
   { name: 'Calendar', href: '/provider/calendar', icon: Calendar },
   { name: 'Reports', href: '/provider/reports', icon: FileText },

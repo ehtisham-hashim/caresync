@@ -15,6 +15,7 @@ import AppointmentsPage from '../pages/AppointmentsPage';
 import PrescriptionsPage from '../pages/PrescriptionsPage';
 import VitalsPage from '../pages/VitalsPage';
 import PatientVisitsPage from '../pages/PatientVisitsPage';
+import PatientDetailPage from '../pages/PatientDetailPage';
 
 // Doctor Pages
 import DoctorDashboard from '../pages/provider/DoctorDashboard';
@@ -50,7 +51,7 @@ export default function AppRoutes() {
         <Route element={<DoctorLayout />}>
           <Route path="/provider/dashboard" element={<DoctorDashboard />} />
           <Route path="/provider/patients" element={<PatientDirectory />} />
-          <Route path="/provider/patients/:patientId" element={<PatientDirectory />} />
+          <Route path="/provider/patients/:patientId" element={<PatientDetailPage />} />
           <Route path="/provider/scribe/:patientId?" element={<ScribeConsole />} />
           <Route path="/provider/reports" element={<DoctorReports />} />
           <Route path="/provider/calendar" element={<DoctorCalendar />} />

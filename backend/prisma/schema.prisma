@@ -117,6 +117,8 @@ model Allergy {
   reaction  String?
 
   createdAt DateTime @default(now())
+
+  @@index([patientId])
 }
 
 model EmergencyContact {
@@ -126,6 +128,8 @@ model EmergencyContact {
   name         String
   relationship String
   phoneNumber  String
+
+  @@index([patientId])
 }
 
 model PatientReport {
@@ -194,6 +198,10 @@ model Prescription {
 
   deletedAt DateTime?
   createdAt DateTime  @default(now())
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([visitId])
 }
 
 model MedicationSchedule {
@@ -204,6 +212,8 @@ model MedicationSchedule {
   reminderTime     DateTime
   isTaken          Boolean  @default(false)
   notificationSent Boolean  @default(false)
+
+  @@index([prescriptionId])
 }
 
 model AuditLog {
@@ -228,6 +238,8 @@ model Notification {
   isRead    Boolean   @default(false)
   deletedAt DateTime?
   createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 model Chat {
@@ -238,6 +250,8 @@ model Chat {
   messages ChatMessage[]
 
   updatedAt DateTime @updatedAt
+
+  @@index([patientId])
 }
 
 model ChatMessage {
@@ -248,6 +262,8 @@ model ChatMessage {
   content String
 
   createdAt DateTime @default(now())
+
+  @@index([chatId])
 }
 
 model DoctorProfile {

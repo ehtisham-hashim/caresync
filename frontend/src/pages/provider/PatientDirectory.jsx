@@ -189,7 +189,9 @@ export default function PatientDirectory() {
                           {patient?.name?.charAt(0) || '?'}
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{patient?.name || 'Unknown Patient'}</div>
+                          <Link to={`/provider/patients/${patient.id}`} className="text-sm font-semibold text-blue-600 hover:underline">
+                            {patient?.name || 'Unknown Patient'}
+                          </Link>
                           <div className="text-sm text-gray-500">ID: {patient.id.substring(0, 8)}</div>
                         </div>
                       </div>
@@ -237,7 +239,7 @@ export default function PatientDirectory() {
           <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
             
             {/* Modal Header */}
-            <div className="px-6 py-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-100 flex items-center justify-between shrink-0">
+            <div className="px-6 py-4 bg-linear-to-r from-indigo-50 to-blue-50 border-b border-gray-100 flex items-center justify-between shrink-0">
               <div className="flex items-center space-x-3">
                 <div className="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white">
                   <Pill className="h-5 w-5" />
