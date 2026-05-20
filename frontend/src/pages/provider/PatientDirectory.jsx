@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Search, Users, Mail, Pill, Clock, Calendar, X, Check, AlertCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import Input from '../../components/common/Input';
@@ -38,10 +38,12 @@ export default function PatientDirectory() {
     },
   });
 
-  const filteredPatients = patients?.filter(p => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.email.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  const filteredPatients = useMemo(() => {
+    return patients?.filter(p =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.email.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
+  }, [patients, searchTerm]);
 
   const handleOpenPrescriptionModal = (patient) => {
     setSelectedPatient(patient);
