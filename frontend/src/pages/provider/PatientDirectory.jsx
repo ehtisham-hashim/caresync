@@ -39,9 +39,10 @@ export default function PatientDirectory() {
   });
 
   const filteredPatients = useMemo(() => {
+    const term = (searchTerm || '').toLowerCase();
     return patients?.filter(p =>
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.email.toLowerCase().includes(searchTerm.toLowerCase())
+      (p.name || '').toLowerCase().includes(term) ||
+      (p.email || '').toLowerCase().includes(term)
     ) || [];
   }, [patients, searchTerm]);
 
