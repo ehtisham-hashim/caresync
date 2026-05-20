@@ -1,5 +1,7 @@
 import asyncHandler from '../utils/asyncHandler.js';
-import { sendSuccess } from '../utils/apiResponse.js';
+import { sendSuccess, ApiError } from '../utils/apiResponse.js';
+import { ERROR_CODES } from '../../constants/errorCodes.js';
+import prisma from '../config/db.js';
 import * as appointmentService from '../services/appointmentService.js';
 import * as aiService from '../services/aiService.js';
 
@@ -21,12 +23,21 @@ export const getAppointments = asyncHandler(async (req, res) => {
 });
 
 export const getPreVisitBrief = asyncHandler(async (req, res) => {
-  // Get the appointment to find the patient
   const appointmentId = req.params.id;
-  // For now, the patientId is passed as query param or fetched from the appointment
-  const { patientId } = req.query;
 
-  const brief = await aiService.generatePreVisitBrief(patientId);
+  const appointment = await prisma.appointment.findUnique({
+    where: { id: appointmentId, deletedAt: null },
+  });
+
+  if (!appointment) {
+    throw new ApiError(404, 'Appointment not found.', ERROR_CODES.NOT_FOUND);
+  }
+
+  if (appointment.doctorId !== req.user.id) {
+    throw new ApiError(403, 'You do not have permission to view this patient\'s data.', ERROR_CODES.FORBIDDEN_403);
+  }
+
+  const brief = await aiService.generatePreVisitBrief(appointment.patientId);
   sendSuccess(res, 200, 'Pre-visit brief generated.', { brief });
 });
 
