@@ -431,7 +431,7 @@ export default function PatientVisitsPage() {
                     </h4>
                     {visitDetail?.prescriptions?.length > 0 ? (
                       <div className="grid gap-3 sm:grid-cols-2">
-                        {visitDetail.prescriptions.map((rx) => (
+                        {visitDetail.prescriptions.map((rx, index) => (
                           <div 
                             key={rx.id} 
                             className="bg-indigo-50/10 p-4 rounded-xl border border-indigo-100/50 flex flex-col justify-between space-y-2 hover:shadow-sm transition-shadow"
@@ -470,7 +470,7 @@ export default function PatientVisitsPage() {
                   </div>
 
                   {/* Medical Terms Tap-to-Explain Section */}
-                  {(translatedData?.medicalTerms || visitDetail?.medicalTerms) && JSON.parse(JSON.stringify(translatedData?.medicalTerms || visitDetail.medicalTerms)).length > 0 && (
+                  {(translatedData?.medicalTerms || visitDetail?.medicalTerms) && (translatedData?.medicalTerms || visitDetail.medicalTerms).length > 0 && (
                     <div className="space-y-2">
                       <h4 className="text-sm font-extrabold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
                         <AlertCircle className="h-4 w-4 text-emerald-500" /> {t('Health Terminology Guide', 'guide')}
@@ -480,7 +480,7 @@ export default function PatientVisitsPage() {
                           {t('Tap or read definitions of medical jargon discussed in your consult:', 'tap')}
                         </p>
                         <div className="grid gap-2.5 sm:grid-cols-2">
-                          {JSON.parse(JSON.stringify(translatedData?.medicalTerms || visitDetail.medicalTerms)).map((termObj, index) => (
+                          {(translatedData?.medicalTerms || visitDetail.medicalTerms).map((termObj, index) => (
                             <div key={index} className="p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
                               <span className={`font-bold text-emerald-700 block ${isUrdu ? 'text-base' : 'text-xs'}`}>{termObj.term}</span>
                               <p className={`text-gray-600 mt-1 ${isUrdu ? 'text-sm leading-[2.5]' : 'text-xs leading-relaxed'}`}>
