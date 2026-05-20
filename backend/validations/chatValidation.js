@@ -8,3 +8,9 @@ export const askCompanionSchema = z.object({
 export const explainTermSchema = z.object({
   term: z.string().min(1, "Medical term is required."),
 });
+
+export const translateSchema = z.object({
+  text: z.string().optional(),
+  obj: z.any().optional(),
+  targetLanguage: z.string().min(1, "Target language is required."),
+});
