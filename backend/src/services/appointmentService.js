@@ -2,6 +2,29 @@ import prisma from '../config/db.js';
 import { ApiError } from '../utils/apiResponse.js';
 import { ERROR_CODES } from '../../constants/errorCodes.js';
 
+let clients = [];
+
+export const addClient = (res) => {
+  const clientId = Date.now();
+  const newClient = { id: clientId, res };
+  clients.push(newClient);
+  return clientId;
+};
+
+export const removeClient = (clientId) => {
+  clients = clients.filter(c => c.id !== clientId);
+};
+
+export const broadcastUpdate = () => {
+  clients.forEach(client => {
+    try {
+      client.res.write('data: {"type": "appointments-updated"}\n\n');
+    } catch (e) {
+      // client connection might be broken
+    }
+  });
+};
+
 /**
  * Schedule a new appointment. Prevents double-booking for doctors.
  * Also links patient to doctor if not already linked.
@@ -66,6 +89,7 @@ export const scheduleAppointment = async (data) => {
     });
   }
 
+  broadcastUpdate();
   return appointment;
 };
 
@@ -120,6 +144,7 @@ export const updateAppointment = async (appointmentId, data, userId) => {
     },
   });
 
+  broadcastUpdate();
   return updated;
 };
 
@@ -148,6 +173,7 @@ export const confirmAppointment = async (appointmentId, doctorId) => {
     },
   });
 
+  broadcastUpdate();
   return updated;
 };
 
@@ -177,6 +203,7 @@ export const cancelAppointment = async (appointmentId, userId) => {
     },
   });
 
+  broadcastUpdate();
   return updated;
 };
 

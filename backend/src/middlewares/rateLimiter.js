@@ -13,6 +13,7 @@ export const apiLimiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.originalUrl.includes('/appointments/updates'),
 });
 
 /**

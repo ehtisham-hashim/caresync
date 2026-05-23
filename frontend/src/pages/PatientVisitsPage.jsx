@@ -90,6 +90,11 @@ const uiTranslations = {
   }
 };
 
+const formatDoctorName = (name) => {
+  if (!name) return '';
+  return name.startsWith('Dr.') || name.startsWith('Dr ') ? name : `Dr. ${name}`;
+};
+
 export default function PatientVisitsPage() {
   const user = useAuthStore((state) => state.user);
   const [selectedVisitId, setSelectedVisitId] = useState(null);
@@ -219,7 +224,7 @@ export default function PatientVisitsPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                        Dr. {visit.doctor?.name || 'Unknown Doctor'}
+                        {formatDoctorName(visit.doctor?.name) || 'Unknown Doctor'}
                       </h3>
                       <p className="text-xs text-gray-500">CareSync Consulting Provider</p>
                     </div>
@@ -328,7 +333,7 @@ export default function PatientVisitsPage() {
                     {t('Consultation Instructions', 'consultation')}
                   </h2>
                   <p className="text-xs text-gray-500">
-                    Dr. {visitDetail?.doctor?.name || 'CareSync Provider'} • {visitDetail && formatDateTime(visitDetail.createdAt)}
+                    {formatDoctorName(visitDetail?.doctor?.name) || 'CareSync Provider'} • {visitDetail && formatDateTime(visitDetail.createdAt)}
                   </p>
                 </div>
               </div>

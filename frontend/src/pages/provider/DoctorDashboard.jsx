@@ -1,21 +1,45 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../../store/useAuthStore';
 import { Calendar as CalendarIcon, Users, FileText, Clock } from 'lucide-react';
 import Card from '../../components/common/Card';
-import api from '../../services/api';
+import api, { getAccessToken } from '../../services/api';
 import { formatDateTime } from '../../utils/formatDate';
 import { Link } from 'react-router-dom';
 
 export default function DoctorDashboard() {
   const user = useAuthStore(state => state.user);
 
-  const { data: appointmentsData } = useQuery({
+  const { data: appointmentsData, refetch } = useQuery({
     queryKey: ['doctor-appointments'],
     queryFn: async () => {
       const { data } = await api.get('/appointments');
       return data.data;
     },
   });
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) return;
+
+    const sseUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1'}/appointments/updates?token=${token}`;
+    const eventSource = new EventSource(sseUrl);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'appointments-updated') {
+          refetch();
+        }
+      } catch (e) {
+        console.error('SSE parse error:', e);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [user, refetch]);
 
   const { data: patientsData } = useQuery({
     queryKey: ['patients-list'],
@@ -25,8 +49,28 @@ export default function DoctorDashboard() {
     },
   });
 
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayEnd = new Date();
+  todayEnd.setHours(23, 59, 59, 999);
+
+  // Filter for actual upcoming appointments: scheduled today or in the future AND status is PENDING or CONFIRMED
+  const upcomingAppointments = appointmentsData?.appointments?.filter(apt => {
+    if (apt.status === 'COMPLETED' || apt.status === 'CANCELLED') {
+      return false;
+    }
+    const aptDate = new Date(apt.scheduledAt);
+    return aptDate >= todayStart;
+  }) || [];
+
+  // Filter for today's active appointments
+  const todayAppointments = appointmentsData?.appointments?.filter(apt => {
+    const aptDate = new Date(apt.scheduledAt);
+    return aptDate >= todayStart && aptDate <= todayEnd && apt.status !== 'CANCELLED';
+  }) || [];
+
   const stats = [
-    { name: "Today's Appointments", value: appointmentsData?.appointments?.length || 0, icon: CalendarIcon, color: 'text-blue-600', bg: 'bg-blue-100' },
+    { name: "Today's Appointments", value: todayAppointments.length, icon: CalendarIcon, color: 'text-blue-600', bg: 'bg-blue-100' },
     { name: "Total Patients", value: patientsData?.length || 0, icon: Users, color: 'text-emerald-600', bg: 'bg-emerald-100' },
     { name: "Pending Reports", value: 0, icon: FileText, color: 'text-amber-600', bg: 'bg-amber-100' }, // Mock for now
   ];
@@ -59,8 +103,8 @@ export default function DoctorDashboard() {
             <Link to="/provider/calendar" className="text-sm text-blue-600 font-medium hover:underline">View All</Link>
           </div>
           <div className="space-y-4 flex-1">
-            {appointmentsData?.appointments?.length > 0 ? (
-              appointmentsData.appointments.slice(0, 4).map(apt => (
+            {upcomingAppointments.length > 0 ? (
+              upcomingAppointments.slice(0, 4).map(apt => (
                 <div key={apt.id} className="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
                   <div>
                     <p className="font-semibold text-gray-900">{apt.patient?.name || 'Patient'}</p>

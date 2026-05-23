@@ -5,12 +5,13 @@ import { appointmentService } from '../services/appointmentService';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Loader from '../components/common/Loader';
-import { Calendar, Clock, User, ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
+import { Calendar, Clock, User, ChevronLeft, ChevronRight, Check, X, AlertTriangle } from 'lucide-react';
 import { formatDate } from '../utils/formatDate';
 import toast from 'react-hot-toast';
 
 export default function DoctorCalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [cancelTargetId, setCancelTargetId] = useState(null);
   const queryClient = useQueryClient();
   
   // Get start and end of week
@@ -79,9 +80,7 @@ export default function DoctorCalendarPage() {
 
   const handleCancel = (e, appointmentId) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to cancel this appointment?')) {
-      cancelMutation.mutate(appointmentId);
-    }
+    setCancelTargetId(appointmentId);
   };
 
   // Group appointments by date
@@ -275,6 +274,39 @@ export default function DoctorCalendarPage() {
           </div>
         )}
       </Card>
+
+      {cancelTargetId && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" onClick={() => setCancelTargetId(null)}>
+          <Card className="w-full max-w-sm p-6 text-center space-y-4" onClick={(e) => e.stopPropagation()}>
+            <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto">
+              <AlertTriangle className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Cancel Appointment</h3>
+              <p className="text-sm text-gray-500 mt-1">Are you sure you want to cancel this appointment? This action cannot be undone.</p>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <Button 
+                variant="outline" 
+                className="flex-1" 
+                onClick={() => setCancelTargetId(null)}
+              >
+                No, Keep
+              </Button>
+              <Button 
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white" 
+                onClick={() => {
+                  cancelMutation.mutate(cancelTargetId);
+                  setCancelTargetId(null);
+                }}
+                isLoading={cancelMutation.isPending}
+              >
+                Yes, Cancel
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

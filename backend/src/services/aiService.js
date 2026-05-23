@@ -39,6 +39,7 @@ Rules:
 }
 - Be thorough and clinical in tone.
 - Extract ALL medical terminology mentioned and provide plain-English meanings.
+- The "term" key in the "medicalTerms" array MUST always be written as the standardized clinical English term (e.g., "Heart" instead of "dil" or "دل", and "Pain" instead of "dard" or "درد") regardless of the language or Romanized script used in the input transcript.
 - If a SOAP section has no relevant content, use "Not discussed in this visit."`;
 
   try {

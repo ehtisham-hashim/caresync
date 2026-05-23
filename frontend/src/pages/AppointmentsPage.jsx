@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Calendar, Clock, User, Plus } from 'lucide-react';
+import { Calendar, Clock, User, Plus, AlertTriangle } from 'lucide-react';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import toast from 'react-hot-toast';
-import api from '../services/api';
+import api, { getAccessToken } from '../services/api';
 import { formatDateTime } from '../utils/formatDate';
+import { useAuthStore } from '../store/useAuthStore';
 
 const appointmentSchema = z.object({
   doctorId: z.string().min(1, 'Please select a doctor'),
@@ -19,8 +20,10 @@ const appointmentSchema = z.object({
 
 export default function AppointmentsPage() {
   const [showModal, setShowModal] = useState(false);
+  const [cancelTargetId, setCancelTargetId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
+  const user = useAuthStore(state => state.user);
 
   const { data: appointmentsData, refetch } = useQuery({
     queryKey: ['appointments'],
@@ -29,6 +32,29 @@ export default function AppointmentsPage() {
       return data.data;
     },
   });
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) return;
+
+    const sseUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1'}/appointments/updates?token=${token}`;
+    const eventSource = new EventSource(sseUrl);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'appointments-updated') {
+          refetch();
+        }
+      } catch (e) {
+        console.error('SSE parse error:', e);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [user, refetch]);
 
   const { data: doctorsData } = useQuery({
     queryKey: ['doctors'],
@@ -56,9 +82,7 @@ export default function AppointmentsPage() {
   });
 
   const handleCancelAppointment = (appointmentId) => {
-    if (window.confirm('Are you sure you want to cancel this appointment?')) {
-      cancelMutation.mutate(appointmentId);
-    }
+    setCancelTargetId(appointmentId);
   };
 
   const onSubmit = async (data) => {
@@ -199,6 +223,39 @@ export default function AppointmentsPage() {
                 </Button>
               </div>
             </form>
+          </Card>
+        </div>
+      )}
+
+      {cancelTargetId && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" onClick={() => setCancelTargetId(null)}>
+          <Card className="w-full max-w-sm p-6 text-center space-y-4" onClick={(e) => e.stopPropagation()}>
+            <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto">
+              <AlertTriangle className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Cancel Appointment</h3>
+              <p className="text-sm text-gray-500 mt-1">Are you sure you want to cancel this appointment? This action cannot be undone.</p>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <Button 
+                variant="outline" 
+                className="flex-1" 
+                onClick={() => setCancelTargetId(null)}
+              >
+                No, Keep
+              </Button>
+              <Button 
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white" 
+                onClick={() => {
+                  cancelMutation.mutate(cancelTargetId);
+                  setCancelTargetId(null);
+                }}
+                isLoading={cancelMutation.isPending}
+              >
+                Yes, Cancel
+              </Button>
+            </div>
           </Card>
         </div>
       )}

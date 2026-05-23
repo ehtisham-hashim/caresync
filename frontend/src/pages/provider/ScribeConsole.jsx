@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useReactMediaRecorder } from 'react-media-recorder';
 import { Mic, Square, Loader2, CheckCircle, FileText, Activity, Save, Languages } from 'lucide-react';
 import Card from '../../components/common/Card';
@@ -11,6 +11,8 @@ import { useQuery } from '@tanstack/react-query';
 export default function ScribeConsole() {
   const { patientId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const appointmentId = searchParams.get('appointmentId');
   const [isProcessing, setIsProcessing] = useState(false);
   const [soapNotes, setSoapNotes] = useState(null);
 
@@ -139,8 +141,17 @@ export default function ScribeConsole() {
   };
 
   const handleSaveNotes = async () => {
-    toast.success('Visit notes finalized!');
-    navigate('/provider/dashboard');
+    try {
+      if (appointmentId) {
+        await api.put(`/appointments/${appointmentId}`, { status: 'COMPLETED' });
+      }
+      toast.success('Visit notes finalized!');
+      navigate('/provider/dashboard');
+    } catch (error) {
+      console.error('Failed to update appointment:', error);
+      toast.error('Visit notes finalized, but appointment status update failed.');
+      navigate('/provider/dashboard');
+    }
   };
 
   if (!patientId) {

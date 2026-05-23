@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar as CalendarIcon, Clock, User, Check, X } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
-import api from '../../services/api';
+import api, { getAccessToken } from '../../services/api';
 import toast from 'react-hot-toast';
+import { useAuthStore } from '../../store/useAuthStore';
 
 export default function DoctorCalendar() {
+  const user = useAuthStore(state => state.user);
   const { data: appointmentsData, refetch, isLoading } = useQuery({
     queryKey: ['doctor-appointments'],
     queryFn: async () => {
@@ -13,6 +16,29 @@ export default function DoctorCalendar() {
       return data.data;
     },
   });
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) return;
+
+    const sseUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1'}/appointments/updates?token=${token}`;
+    const eventSource = new EventSource(sseUrl);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'appointments-updated') {
+          refetch();
+        }
+      } catch (e) {
+        console.error('SSE parse error:', e);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [user, refetch]);
 
   const handleStatusUpdate = async (id, status) => {
     try {
