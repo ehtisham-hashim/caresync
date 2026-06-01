@@ -8,3 +8,9 @@ export const askCompanionSchema = z.object({
 export const explainTermSchema = z.object({
   term: z.string().min(1, "Medical term is required."),
 });
+
+// Add your missing translateSchema here
+export const translateSchema = z.object({
+  text: z.string().min(1, "Text to translate is required."),
+  targetLanguage: z.string().min(2, "Target language code is required."),
+});
