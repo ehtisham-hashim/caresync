@@ -81,68 +81,71 @@ export default function VitalsPage() {
   const hasChartData = chartData.length > 0;
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Health & Vitals</h1>
-          <p className="text-gray-600 mt-1">Track your health metrics over time</p>
+    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+      <div className="flex justify-between items-center mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-5 bg-[#1976d2] rounded-full"></div>
+          <div>
+            <h1 className="text-xl font-bold text-[#2c3e50]">Health & Vitals</h1>
+            <p className="text-sm text-gray-500 mt-1">Track your health metrics over time</p>
+          </div>
         </div>
-        <Button onClick={() => setShowModal(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" /> Add Reading
+        <Button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-[#1976d2] hover:bg-[#1565c0]">
+          <Plus className="h-4 w-4" /> <span className="hidden sm:inline">Add Reading</span>
         </Button>
       </div>
 
-      <div className="grid md:grid-cols-4 gap-4">
-        <Card className="flex items-center gap-4 border border-gray-100 shadow-sm">
+      <div className="grid md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-gray-50 flex items-center gap-4 border border-gray-100 shadow-sm rounded-2xl p-6">
           <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center shrink-0">
             <Heart className="h-6 w-6 text-red-600" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Latest Heart Rate</p>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-sm text-gray-500 font-bold">Latest Heart Rate</p>
+            <p className="text-2xl font-bold text-[#2c3e50]">
               {vitalsData?.vitals?.[0]?.heartRate ? `${vitalsData.vitals[0].heartRate} bpm` : '--'}
             </p>
           </div>
-        </Card>
-        <Card className="flex items-center gap-4 border border-gray-100 shadow-sm">
+        </div>
+        <div className="bg-gray-50 flex items-center gap-4 border border-gray-100 shadow-sm rounded-2xl p-6">
           <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
             <Activity className="h-6 w-6 text-blue-600" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Latest BP</p>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-sm text-gray-500 font-bold">Latest BP</p>
+            <p className="text-2xl font-bold text-[#2c3e50]">
               {vitalsData?.vitals?.[0]?.bloodPressure || '--'}
             </p>
           </div>
-        </Card>
-        <Card className="flex items-center gap-4 border border-gray-100 shadow-sm">
+        </div>
+        <div className="bg-gray-50 flex items-center gap-4 border border-gray-100 shadow-sm rounded-2xl p-6">
           <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center shrink-0">
             <Scale className="h-6 w-6 text-emerald-600" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Latest Weight</p>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-sm text-gray-500 font-bold">Latest Weight</p>
+            <p className="text-2xl font-bold text-[#2c3e50]">
               {vitalsData?.vitals?.[0]?.weight ? `${vitalsData.vitals[0].weight} lbs` : '--'}
             </p>
           </div>
-        </Card>
-        <Card className="flex items-center gap-4 border border-gray-100 shadow-sm">
+        </div>
+        <div className="bg-gray-50 flex items-center gap-4 border border-gray-100 shadow-sm rounded-2xl p-6">
           <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center shrink-0">
             <Thermometer className="h-6 w-6 text-amber-600" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Temperature</p>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-sm text-gray-500 font-bold">Temperature</p>
+            <p className="text-2xl font-bold text-[#2c3e50]">
               {vitalsData?.vitals?.[0]?.temperature ? `${vitalsData.vitals[0].temperature}°F` : '--'}
             </p>
           </div>
-        </Card>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Heart Rate Chart */}
-        <Card className="pt-6 border border-gray-100 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 px-2 flex items-center gap-2">
+        <div className="pt-6 pb-2 px-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+          <h2 className="text-lg font-bold text-[#2c3e50] mb-4 flex items-center gap-2">
             <Heart className="h-5 w-5 text-red-500 animate-pulse" /> Heart Rate History
           </h2>
           <div className="h-56 w-full">
@@ -157,17 +160,17 @@ export default function VitalsPage() {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+              <div className="h-full flex items-center justify-center text-gray-400 text-sm font-medium">
                 No heart rate data recorded
               </div>
             )}
           </div>
-        </Card>
+        </div>
 
         {/* Blood Pressure Chart */}
-        <Card className="pt-6 border border-gray-100 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 px-2 flex items-center gap-2">
-            <Activity className="h-5 w-5 text-blue-500" /> Blood Pressure History
+        <div className="pt-6 pb-2 px-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+          <h2 className="text-lg font-bold text-[#2c3e50] mb-4 flex items-center gap-2">
+            <Activity className="h-5 w-5 text-[#1976d2]" /> Blood Pressure History
           </h2>
           <div className="h-56 w-full">
             {chartData.some(d => d.systolic !== null) ? (
@@ -178,21 +181,21 @@ export default function VitalsPage() {
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 11 }} dx={-5} />
                   <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                   <Legend verticalAlign="top" height={24} iconType="circle" wrapperStyle={{ fontSize: '10px' }} />
-                  <Line type="monotone" dataKey="systolic" name="Systolic (mmHg)" stroke="#3B82F6" strokeWidth={2.5} connectNulls dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                  <Line type="monotone" dataKey="systolic" name="Systolic (mmHg)" stroke="#1976d2" strokeWidth={2.5} connectNulls dot={{ r: 3 }} activeDot={{ r: 5 }} />
                   <Line type="monotone" dataKey="diastolic" name="Diastolic (mmHg)" stroke="#60A5FA" strokeWidth={2.5} connectNulls dot={{ r: 3 }} activeDot={{ r: 5 }} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+              <div className="h-full flex items-center justify-center text-gray-400 text-sm font-medium">
                 No blood pressure data recorded
               </div>
             )}
           </div>
-        </Card>
+        </div>
 
         {/* Weight Chart */}
-        <Card className="pt-6 border border-gray-100 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 px-2 flex items-center gap-2">
+        <div className="pt-6 pb-2 px-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+          <h2 className="text-lg font-bold text-[#2c3e50] mb-4 flex items-center gap-2">
             <Scale className="h-5 w-5 text-emerald-500" /> Weight History
           </h2>
           <div className="h-56 w-full">
@@ -207,16 +210,16 @@ export default function VitalsPage() {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+              <div className="h-full flex items-center justify-center text-gray-400 text-sm font-medium">
                 No weight data recorded
               </div>
             )}
           </div>
-        </Card>
+        </div>
 
         {/* Temperature Chart */}
-        <Card className="pt-6 border border-gray-100 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 px-2 flex items-center gap-2">
+        <div className="pt-6 pb-2 px-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+          <h2 className="text-lg font-bold text-[#2c3e50] mb-4 flex items-center gap-2">
             <Thermometer className="h-5 w-5 text-amber-500" /> Temperature History
           </h2>
           <div className="h-56 w-full">
@@ -231,18 +234,18 @@ export default function VitalsPage() {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+              <div className="h-full flex items-center justify-center text-gray-400 text-sm font-medium">
                 No temperature data recorded
               </div>
             )}
           </div>
-        </Card>
+        </div>
       </div>
 
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">Record Vitals</h2>
+          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4 text-[#2c3e50]">Record Vitals</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <Input
                 label="Heart Rate (bpm)"
@@ -277,12 +280,12 @@ export default function VitalsPage() {
                 <Button type="button" variant="outline" className="flex-1" onClick={() => setShowModal(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1" isLoading={isSubmitting}>
+                <Button type="submit" className="flex-1 bg-[#1976d2] hover:bg-[#1565c0]" isLoading={isSubmitting}>
                   Save Reading
                 </Button>
               </div>
             </form>
-          </Card>
+          </div>
         </div>
       )}
     </div>

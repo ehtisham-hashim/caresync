@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User } from 'lucide-react';
-import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -73,34 +72,37 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex flex-col">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold text-gray-900">AI Health Companion</h1>
-        <p className="text-gray-600">Ask me anything about your health</p>
+    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 h-[calc(100vh-10rem)] flex flex-col">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-1 h-5 bg-[#1976d2] rounded-full"></div>
+        <div>
+          <h1 className="text-xl font-bold text-[#2c3e50]">AI Health Companion</h1>
+          <p className="text-sm text-gray-500 mt-1">Ask me anything about your health</p>
+        </div>
       </div>
 
-      <Card className="flex-1 flex flex-col overflow-hidden p-0! border-gray-200">
+      <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 rounded-2xl border border-gray-100">
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50/50">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex gap-4 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
             >
-              <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                message.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white'
+              <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
+                message.role === 'user' ? 'bg-[#1976d2] text-white' : 'bg-[#2c3e50] text-white'
               }`}>
                 {message.role === 'user' ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
               </div>
               <div className={`flex flex-col ${message.role === 'user' ? 'items-end' : 'items-start'} max-w-[80%]`}>
                 <div className={`p-4 rounded-2xl ${
                   message.role === 'user'
-                    ? 'bg-blue-600 text-white rounded-tr-none'
+                    ? 'bg-[#1976d2] text-white rounded-tr-none'
                     : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none shadow-sm'
                 }`}>
                   <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                 </div>
-                <span className="text-xs text-gray-400 mt-1 mx-1">
+                <span className="text-xs text-gray-400 mt-1 mx-1 font-medium">
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
@@ -109,7 +111,7 @@ export default function ChatPage() {
 
           {isTyping && (
             <div className="flex gap-4">
-              <div className="shrink-0 w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center">
+              <div className="shrink-0 w-10 h-10 rounded-xl bg-[#2c3e50] text-white flex items-center justify-center">
                 <Bot className="h-5 w-5" />
               </div>
               <div className="bg-white border border-gray-200 p-4 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-2">
@@ -131,17 +133,17 @@ export default function ChatPage() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Type your health question..."
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             />
-            <Button onClick={handleSend} disabled={!input.trim() || isTyping} className="px-6 rounded-lg">
+            <Button onClick={handleSend} disabled={!input.trim() || isTyping} className="px-6 rounded-xl bg-[#1976d2] hover:bg-[#1565c0]">
               <Send className="h-5 w-5" />
             </Button>
           </div>
-          <p className="text-xs text-gray-500 mt-2 text-center">
+          <p className="text-xs text-gray-500 mt-2 text-center font-medium">
             ⚠️ This AI provides general information only. Always consult your doctor for medical advice.
           </p>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
