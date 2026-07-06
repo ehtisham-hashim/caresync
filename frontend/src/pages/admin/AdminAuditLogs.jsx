@@ -36,14 +36,17 @@ export default function AdminAuditLogs() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">System Audit Logs</h1>
-        <p className="mt-1 text-sm text-gray-500">
+      <div className="mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-5 bg-[#1976d2] rounded-full"></div>
+          <h1 className="text-xl font-bold text-[#2c3e50]">System Audit Logs</h1>
+        </div>
+        <p className="mt-2 text-sm text-gray-500 pl-4">
           Chronological record of system events and entity modifications.
         </p>
       </div>
 
-      <div className="bg-white shadow-sm border border-gray-200 rounded-xl overflow-hidden">
+      <div className="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">

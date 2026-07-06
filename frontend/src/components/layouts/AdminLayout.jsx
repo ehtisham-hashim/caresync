@@ -1,49 +1,26 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, Activity, ShieldAlert, ListTree } from 'lucide-react';
-import { cn } from '../../utils/cn';
+import { Outlet } from 'react-router-dom';
+import { LayoutDashboard, UserPlus, Activity, Calendar, ShieldAlert } from 'lucide-react';
+import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-  { name: 'Users', href: '/admin/users', icon: Users },
-  { name: 'Assignments', href: '/admin/assignments', icon: ListTree },
-  { name: 'Audit Logs', href: '/admin/logs', icon: ShieldAlert },
+  { name: 'Dashboard', sub: 'Overview & Statistics', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Patients', sub: 'Manage Patients', href: '/admin/users?role=PATIENT', icon: UserPlus },
+  { name: 'Doctors', sub: 'Manage Doctors', href: '/admin/users?role=DOCTOR', icon: Activity },
+  { name: 'Appointments', sub: 'View Appointments', href: '/admin/assignments', icon: Calendar },
+  { name: 'Audit Logs', sub: 'System Activity', href: '/admin/logs', icon: ShieldAlert },
 ];
 
 export default function AdminLayout() {
-  const location = useLocation();
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen flex flex-col font-sans bg-gray-50">
       <Navbar />
-      <div className="flex flex-1">
-        {/* Desktop Sidebar */}
-        <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 sticky top-16 h-[calc(100vh-4rem)]">
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.href || location.pathname.startsWith(item.href + '/');
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium',
-                    isActive
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                  )}
-                >
-                  <Icon className={cn('h-5 w-5', isActive ? 'text-blue-600' : 'text-gray-500')} />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
-        </aside>
+
+      <div className="flex flex-1 overflow-hidden h-[calc(100vh-72px)]">
+        <Sidebar navigation={navigation} />
 
         {/* Main Content */}
-        <main className="flex-1 w-full mx-auto p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 w-full mx-auto p-6 lg:p-8 overflow-y-auto bg-[#fafafa]" style={{ backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
           <Outlet />
         </main>
       </div>

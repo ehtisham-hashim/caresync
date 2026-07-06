@@ -115,47 +115,50 @@ export default function AppointmentsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Appointments</h1>
-          <p className="text-gray-600 mt-1">Manage your upcoming and past visits</p>
+    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+      <div className="flex justify-between items-center mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-5 bg-[#1976d2] rounded-full"></div>
+          <div>
+            <h1 className="text-xl font-bold text-[#2c3e50]">Appointments</h1>
+            <p className="text-sm text-gray-500 mt-1">Manage your upcoming and past visits</p>
+          </div>
         </div>
-        <Button onClick={() => setShowModal(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" /> Book Appointment
+        <Button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-[#1976d2] hover:bg-[#1565c0]">
+          <Plus className="h-4 w-4" /> <span className="hidden sm:inline">Book Appointment</span>
         </Button>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         {appointmentsData?.appointments?.length > 0 ? (
           appointmentsData.appointments.map((apt) => (
-            <Card key={apt.id} className="flex flex-col">
+            <div key={apt.id} className="bg-gray-50 border border-gray-100 rounded-2xl p-6 flex flex-col">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-lg">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-[#1976d2] font-bold text-lg">
                     {apt.doctor?.name?.charAt(0) || 'D'}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">{apt.doctor?.name || 'Doctor'}</h3>
-                    <p className="text-sm text-gray-600">{apt.doctor?.specialization || 'Provider'}</p>
+                    <h3 className="font-bold text-[#2c3e50]">{apt.doctor?.name || 'Doctor'}</h3>
+                    <p className="text-sm font-medium text-gray-500">{apt.doctor?.specialization || 'Provider'}</p>
                   </div>
                 </div>
-                <span className={`px-2 py-1 rounded-md text-xs font-semibold ${getStatusColor(apt.status)}`}>
+                <span className={`px-2.5 py-1 rounded-full text-xs font-bold tracking-wider uppercase ${getStatusColor(apt.status)}`}>
                   {apt.status}
                 </span>
               </div>
-              <div className="space-y-2 mb-4 flex-1">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Calendar className="h-4 w-4" />
-                  <span>{formatDateTime(apt.scheduledAt)}</span>
+              <div className="space-y-3 mb-4 flex-1">
+                <div className="flex items-center gap-2 text-sm text-gray-600 bg-white p-2 rounded-lg border border-gray-100">
+                  <Calendar className="h-4 w-4 text-[#1976d2]" />
+                  <span className="font-medium">{formatDateTime(apt.scheduledAt)}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <User className="h-4 w-4" />
-                  <span>{apt.reason}</span>
+                <div className="flex items-center gap-2 text-sm text-gray-600 bg-white p-2 rounded-lg border border-gray-100">
+                  <User className="h-4 w-4 text-[#1976d2]" />
+                  <span className="font-medium">{apt.reason}</span>
                 </div>
               </div>
               {apt.status === 'PENDING' || apt.status === 'CONFIRMED' ? (
-                <div className="pt-4 border-t border-gray-100">
+                <div className="pt-4 border-t border-gray-200">
                   <Button 
                     variant="outline" 
                     size="sm" 
@@ -167,27 +170,27 @@ export default function AppointmentsPage() {
                   </Button>
                 </div>
               ) : null}
-            </Card>
+            </div>
           ))
         ) : (
-          <div className="col-span-full py-12 text-center text-gray-500 bg-white rounded-2xl border border-gray-200 border-dashed">
+          <div className="col-span-full py-12 text-center text-gray-500 bg-gray-50 rounded-2xl border border-gray-200 border-dashed">
             <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-            <p className="text-lg font-medium text-gray-900">No appointments found</p>
-            <p className="mt-1">You haven't scheduled any appointments yet.</p>
+            <p className="text-lg font-bold text-[#2c3e50]">No appointments found</p>
+            <p className="mt-1 text-sm">You haven't scheduled any appointments yet.</p>
           </div>
         )}
       </div>
 
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">Book New Appointment</h2>
+          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4 text-[#2c3e50]">Book New Appointment</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Doctor</label>
                 <select
                   {...register('doctorId')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
                 >
                   <option value="">Select Doctor</option>
                   {doctorsData?.map(d => (
@@ -205,10 +208,10 @@ export default function AppointmentsPage() {
               />
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Visit</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Reason for Visit</label>
                 <textarea
                   {...register('reason')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
                   rows="3"
                 ></textarea>
                 {errors.reason && <p className="text-red-500 text-sm mt-1">{errors.reason.message}</p>}
@@ -218,23 +221,23 @@ export default function AppointmentsPage() {
                 <Button type="button" variant="outline" className="flex-1" onClick={() => setShowModal(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1" isLoading={isSubmitting}>
+                <Button type="submit" className="flex-1 bg-[#1976d2] hover:bg-[#1565c0]" isLoading={isSubmitting}>
                   Book
                 </Button>
               </div>
             </form>
-          </Card>
+          </div>
         </div>
       )}
 
       {cancelTargetId && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" onClick={() => setCancelTargetId(null)}>
-          <Card className="w-full max-w-sm p-6 text-center space-y-4" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 w-full max-w-sm text-center space-y-4" onClick={(e) => e.stopPropagation()}>
             <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto">
               <AlertTriangle className="h-6 w-6" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Cancel Appointment</h3>
+              <h3 className="text-lg font-bold text-[#2c3e50]">Cancel Appointment</h3>
               <p className="text-sm text-gray-500 mt-1">Are you sure you want to cancel this appointment? This action cannot be undone.</p>
             </div>
             <div className="flex gap-3 pt-2">
@@ -246,7 +249,7 @@ export default function AppointmentsPage() {
                 No, Keep
               </Button>
               <Button 
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white" 
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white border-none" 
                 onClick={() => {
                   cancelMutation.mutate(cancelTargetId);
                   setCancelTargetId(null);
@@ -256,7 +259,7 @@ export default function AppointmentsPage() {
                 Yes, Cancel
               </Button>
             </div>
-          </Card>
+          </div>
         </div>
       )}
     </div>

@@ -29,9 +29,12 @@ export default function AdminDoctorAssignments() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Doctor Assignments</h1>
-        <p className="mt-1 text-sm text-gray-500">
+      <div className="mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-5 bg-[#1976d2] rounded-full"></div>
+          <h1 className="text-xl font-bold text-[#2c3e50]">Doctor Assignments</h1>
+        </div>
+        <p className="mt-2 text-sm text-gray-500 pl-4">
           Overview of all doctors and their assigned patients.
         </p>
       </div>
@@ -43,7 +46,7 @@ export default function AdminDoctorAssignments() {
           </div>
         ) : (
           doctors.map((doctor) => (
-            <div key={doctor.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div key={doctor.id} className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="p-6 border-b border-gray-200 bg-gray-50">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">

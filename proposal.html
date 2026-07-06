@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareSync DBMS Proposal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            background-color: #f8fafc;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 40px;
+            background-color: #0f172a;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                font-size: 10.5pt;
+            }
+            .page-break-before {
+                page-break-before: always;
+            }
+            .no-print-break {
+                page-break-inside: avoid;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .shadow-sm, .shadow-md, .shadow-lg {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+        }
+        
+        .mermaid svg {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-8 print:p-0 flex justify-center">
+
+    <div class="max-w-4xl w-full bg-white shadow-xl print:shadow-none p-12 md:p-16 border-t-[12px] border-brand-900 rounded-b-xl">
+
+        <!-- 1. Title Page -->
+        <header class="mb-14 text-center no-print-break">
+            <div class="inline-block px-4 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold tracking-widest uppercase mb-6">
+                Project Proposal
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-brand-900 tracking-tight leading-tight mb-4 font-display">
+                Scalable Relational Architecture for AI-Assisted Healthcare
+            </h1>
+            <h2 class="text-2xl font-light text-slate-500 mb-10 tracking-wide">CareSync Advanced DBMS</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                <div class="bg-brand-50 p-6 rounded-lg border border-brand-100">
+                    <h3 class="text-xs text-brand-900 font-bold uppercase tracking-widest mb-3 border-b border-brand-200 pb-2">Project Team</h3>
+                    <ul class="text-sm text-slate-700 font-medium space-y-2">
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-800 mr-2"></span> Muhammad Ehtisham Hashim</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-800 mr-2"></span> Muhammad Abdullah Siddique</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-800 mr-2"></span> Raja Muhammad Ali</li>
+                        <li class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-800 mr-2"></span> Ali Ahmad</li>
+                    </ul>
+                </div>
+                <div class="bg-brand-50 p-6 rounded-lg border border-brand-100">
+                    <h3 class="text-xs text-brand-900 font-bold uppercase tracking-widest mb-3 border-b border-brand-200 pb-2">Document Details</h3>
+                    <ul class="text-sm text-slate-700 space-y-3">
+                        <li class="flex justify-between"><strong>Date:</strong> <span>July 6, 2026</span></li>
+                        <li class="flex justify-between"><strong>Version:</strong> <span>v1.0 (Final)</span></li>
+                        <li class="flex justify-between pt-2 border-t border-brand-200"><strong>Prepared For:</strong> <span class="font-bold text-brand-900">Ma'am Shahida</span></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. Introduction & Problem Statement -->
+        <section class="mb-12 no-print-break">
+            <h3 class="text-2xl font-bold text-brand-900 section-title">1. Introduction & Problem Statement</h3>
+            
+            <div class="space-y-5 text-sm text-slate-700 text-justify">
+                <div>
+                    <h4 class="font-bold text-brand-900 text-base mb-1">Project Overview</h4>
+                    <p>CareSync is a state-of-the-art healthcare management platform designed to modernize clinical interactions. The system pioneers a hybrid data architecture by tightly coupling strict relational clinical records with unstructured multimedia storage (audio transcripts) and dynamic AI integration (Google Gemini) for automated SOAP note generation.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-brand-900 text-base mb-1">Problem Statement</h4>
+                    <p>Traditional clinical databases are rigidly structured and poorly equipped to handle modern data formats like voice recordings and AI-generated text. Consequently, healthcare providers suffer from severe data fragmentation, lethargic query performance during complex historical patient lookups, and transaction bottlenecks caused by concurrent scheduling conflicts.</p>
+                </div>
+                <div class="bg-brand-50 p-5 rounded border border-brand-100">
+                    <h4 class="font-bold text-brand-900 text-sm uppercase tracking-wider mb-3">Core Objectives</h4>
+                    <ul class="list-disc pl-5 space-y-1.5 font-medium">
+                        <li>Engineer a rigid relational schema capable of seamlessly integrating unstructured JSON data.</li>
+                        <li>Enforce strict data consistency and eliminate write anomalies across multi-doctor facilities.</li>
+                        <li>Optimize query execution pathways to aggregate longitudinal patient histories instantly.</li>
+                        <li>Automate HIPAA-level compliance via immutable, database-level audit triggers.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Requirements Analysis -->
+        <section class="mb-12 no-print-break">
+            <h3 class="text-2xl font-bold text-brand-900 section-title">2. Requirements Analysis</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 p-3">
+                        <h4 class="font-bold text-brand-900 text-sm uppercase tracking-wider">Functional Requirements</h4>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-[16px_130px_1fr] gap-x-2 gap-y-3 text-sm text-slate-700 items-start">
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>Role-Based Access:</strong> <span>Strict workflow segregation for PATIENT, DOCTOR, and ADMIN profiles.</span>
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>Appointment Logic:</strong> <span>Scheduling algorithms with built-in conflict resolution.</span>
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>Clinical Records:</strong> <span>Centralized storage for vital signs, prescriptions, and AI-generated SOAP notes.</span>
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>Audit Trails:</strong> <span>Automatic generation of immutable logs for all data mutations.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 p-3">
+                        <h4 class="font-bold text-brand-900 text-sm uppercase tracking-wider">Non-Functional Requirements</h4>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-[16px_130px_1fr] gap-x-2 gap-y-3 text-sm text-slate-700 items-start">
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>Performance Benchmark:</strong> <span>Transaction response times strictly under 500ms.</span>
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>High Availability:</strong> <span>99.9% uptime architecture using edge-cached cloud infrastructure.</span>
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>Cryptographic Security:</strong> <span>All endpoints protected by JWT authentication and bcrypt hashing.</span>
+                            <span class="text-brand-800 font-bold mt-0.5">›</span> <strong>Scalability:</strong> <span>Advanced connection pooling designed to handle sudden concurrent traffic spikes safely.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Database Design & Architecture -->
+        <section class="mb-12 page-break-before">
+            <h3 class="text-2xl font-bold text-brand-900 section-title">3. Database Design & Architecture</h3>
+            
+            <p class="text-sm text-slate-700 text-justify mb-6">
+                The architecture revolves around the <strong>User</strong> entity (differentiated by Role), tracking interactions through <strong>Appointments</strong> and <strong>Visits</strong>. A Visit binds unstructured audio interactions with AI-generated SOAP notes, relating directly to medical <strong>Prescriptions</strong>. Every data modification instantly triggers an entry in the <strong>AuditLog</strong>.
+            </p>
+
+            <div class="mb-6 p-1 border border-slate-200 rounded-lg bg-white no-print-break">
+                <div class="bg-brand-50 py-2 px-4 rounded-t border-b border-slate-200">
+                    <p class="text-xs text-brand-900 uppercase tracking-widest font-bold text-center">Entity Relationship Diagram (ERD)</p>
+                </div>
+                <div class="p-4 flex justify-center">
+                    <div class="mermaid w-full overflow-visible">
+                        erDiagram
+                            USER ||--o{ VISIT : attends
+                            USER ||--o{ APPOINTMENT : schedules
+                            USER ||--o{ PRESCRIPTION : receives
+                            USER ||--o{ AUDIT_LOG : generates
+                            
+                            USER {
+                                String id PK
+                                String email
+                                Enum role
+                                Json insuranceInfo
+                            }
+                            
+                            VISIT {
+                                String id PK
+                                String audioUrl
+                                String subjective
+                                String objective
+                            }
+    
+                            PRESCRIPTION {
+                                String id PK
+                                String medicineName
+                                String simplifiedInstructions
+                            }
+                            
+                            APPOINTMENT {
+                                String id PK
+                                DateTime scheduledAt
+                                String status
+                            }
+                            
+                            AUDIT_LOG {
+                                String id PK
+                                String action
+                                Json metadata
+                            }
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-brand-800 text-sm text-slate-700 text-justify">
+                <h4 class="font-bold text-brand-900 mb-2">Relational Schema & Normalization Strategy</h4>
+                <p>The database is rigorously normalized to <strong>Boyce-Codd Normal Form (BCNF)</strong>. Multi-valued attributes like patient vitals and allergies have been decoupled into distinct <code>Vital</code> and <code>Allergy</code> tables referencing the User via Foreign Keys. Transitive dependencies are eliminated to categorically prevent update anomalies. Semi-structured, highly variable data (e.g., unstructured lab results) securely utilizes PostgreSQL's optimized <code>JSONB</code> datatype to maintain schema flexibility without sacrificing relational integrity.</p>
+            </div>
+        </section>
+
+
+        <!-- 6. Advanced Implementation Details -->
+        <section class="mb-12 no-print-break">
+            <h3 class="text-2xl font-bold text-brand-900 section-title">4. Advanced Implementation Details</h3>
+            
+            <div class="space-y-6 text-sm text-slate-700">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="md:w-1/3">
+                        <h4 class="font-bold text-brand-900 border-b border-slate-200 pb-2">Technology Stack</h4>
+                    </div>
+                    <div class="md:w-2/3">
+                        <p>The core engine is <strong>PostgreSQL (NeonDB)</strong>, strictly managed via the <strong>Prisma ORM</strong> to guarantee type safety. <strong>Upstash Redis</strong> serves as a high-speed caching and rate-limiting broker. <strong>Supabase</strong> provides secure object storage exclusively for clinical audio recordings.</p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="md:w-1/3">
+                        <h4 class="font-bold text-brand-900 border-b border-slate-200 pb-2">Advanced SQL Components</h4>
+                    </div>
+                    <div class="md:w-2/3 space-y-2">
+                        <p><strong>Indexing Strategies:</strong> B-Tree indexing is strictly enforced on all Foreign Keys (e.g., <code>patientId</code>) yielding O(log N) join speeds. Unique Hash constraints optimize high-traffic lookup attributes like emails.</p>
+                        <p><strong>Triggers & Procedures:</strong> Automated, immutable database triggers enforce the instantiation of <code>AuditLog</code> entries immediately upon critical table mutations.</p>
+                        <p><strong>Referential Integrity:</strong> Explicit cascading deletes guarantee no orphan records exist when dependent entities are purged from the system.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="md:w-1/3">
+                        <h4 class="font-bold text-brand-900 border-b border-slate-200 pb-2">Transaction Management</h4>
+                    </div>
+                    <div class="md:w-2/3">
+                        <p>We leverage PostgreSQL's robust <strong>Multi-Version Concurrency Control (MVCC)</strong>. Critical write paths—such as scheduling identical doctor appointment slots—are protected by transactions operating under the <code>Read Committed</code> isolation level, effectively mitigating dirty reads and concurrent race conditions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Query Optimization & Testing Plan -->
+        <section class="mb-6 no-print-break">
+            <h3 class="text-2xl font-bold text-brand-900 section-title">5. Query Optimization & Testing Plan</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-slate-700">
+                <div>
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 rounded bg-brand-100 flex items-center justify-center text-brand-800 font-bold mr-3">A</div>
+                        <h4 class="font-bold text-brand-900 text-base">Sample Complex Queries</h4>
+                    </div>
+                    <ul class="list-disc pl-11 space-y-2">
+                        <li><strong>Longitudinal Patient Aggregation:</strong> Complex multi-table <code>JOIN</code> operations combining the <code>User</code>, <code>Visit</code>, <code>Prescription</code>, and <code>Vital</code> tables to construct a complete medical history timeline using a singular, highly-optimized query execution plan.</li>
+                        <li><strong>Analytical Subqueries:</strong> Deploying Window Functions and grouped aggregations over the <code>Appointment</code> table to pinpoint high-load doctors and peak clinical hours for predictive scheduling algorithms.</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 rounded bg-brand-100 flex items-center justify-center text-brand-800 font-bold mr-3">B</div>
+                        <h4 class="font-bold text-brand-900 text-base">Testing Strategy</h4>
+                    </div>
+                    <ul class="list-disc pl-11 space-y-2">
+                        <li><strong>Mock Data Population:</strong> Development pipelines utilize deterministic database seed scripts to inject thousands of synthesized patient records, appointments, and medical histories.</li>
+                        <li><strong>Constraint Validation:</strong> Rigorous automated integration testing designed specifically to attempt constraint violations (e.g., overlapping appointment times, unauthorized foreign key mutations) to cryptographically verify schema integrity.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- Mermaid CDN Initialization -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'neutral',
+            fontFamily: 'Inter, sans-serif'
+        });
+    </script>
+</body>
+</html>

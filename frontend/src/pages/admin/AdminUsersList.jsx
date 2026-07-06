@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { getAllUsers } from '../../services/adminService';
 import Loader from '../../components/common/Loader';
 import { format } from 'date-fns';
@@ -13,9 +14,32 @@ const TABS = [
 ];
 
 export default function AdminUsersList() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const roleParam = searchParams.get('role');
+  
   const [page, setPage] = useState(1);
-  const [activeTab, setActiveTab] = useState('ALL');
+  const [activeTab, setActiveTab] = useState(roleParam || 'ALL');
   const limit = 50; // increased limit so tabs have more data to filter on the client side
+
+  useEffect(() => {
+    if (roleParam && TABS.some(t => t.id === roleParam)) {
+      setActiveTab(roleParam);
+      setPage(1);
+    } else if (!roleParam) {
+      setActiveTab('ALL');
+    }
+  }, [roleParam]);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    setPage(1);
+    if (tabId === 'ALL') {
+      searchParams.delete('role');
+    } else {
+      searchParams.set('role', tabId);
+    }
+    setSearchParams(searchParams);
+  };
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['adminUsers', page, limit],
@@ -49,14 +73,17 @@ export default function AdminUsersList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-        <p className="mt-1 text-sm text-gray-500">
+      <div className="mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-5 bg-[#1976d2] rounded-full"></div>
+          <h1 className="text-xl font-bold text-[#2c3e50]">User Management</h1>
+        </div>
+        <p className="mt-2 text-sm text-gray-500 pl-4">
           A complete list of all registered users in the system.
         </p>
       </div>
 
-      <div className="bg-white shadow-sm border border-gray-200 rounded-xl overflow-hidden flex flex-col">
+      <div className="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden flex flex-col">
         
         {/* Tabs */}
         <div className="border-b border-gray-200 bg-gray-50/50 px-4 pt-4">
@@ -64,10 +91,7 @@ export default function AdminUsersList() {
             {TABS.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id);
-                  setPage(1); // Reset page when changing tabs to avoid empty views
-                }}
+                onClick={() => handleTabChange(tab.id)}
                 className={cn(
                   'whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm transition-colors',
                   activeTab === tab.id

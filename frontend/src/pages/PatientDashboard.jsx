@@ -115,104 +115,109 @@ export default function PatientDashboard() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">
-          Welcome back, {user?.name?.split(' ')[0]}
-        </h1>
-        <p className="text-gray-600 mt-1">Here's your health overview</p>
+    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-1 h-5 bg-[#1976d2] rounded-full"></div>
+        <div>
+          <h2 className="text-xl font-bold text-[#2c3e50]">
+            Welcome back, {user?.name?.split(' ')[0]}
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">Here's your health overview</p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {quickActions.map((action) => {
-          const Icon = action.icon;
-          if (action.onClick) {
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {quickActions.map((action) => {
+            const Icon = action.icon;
+            if (action.onClick) {
+              return (
+                <button 
+                  key={action.title} 
+                  onClick={action.onClick} 
+                  className="w-full text-left focus:outline-none"
+                >
+                  <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center h-full">
+                    <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center mb-3 mx-auto`}>
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <p className="font-semibold text-[#2c3e50]">{action.title}</p>
+                  </div>
+                </button>
+              );
+            }
             return (
-              <button 
-                key={action.title} 
-                onClick={action.onClick} 
-                className="w-full text-left focus:outline-none"
-              >
-                <Card className="hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center h-full">
-                  <div className={`w-12 h-12 rounded-lg ${action.color} flex items-center justify-center mb-3 mx-auto`}>
+              <Link key={action.title} to={action.href}>
+                <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center h-full">
+                  <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center mb-3 mx-auto`}>
                     <Icon className="h-6 w-6" />
                   </div>
-                  <p className="font-medium text-gray-900">{action.title}</p>
-                </Card>
-              </button>
+                  <p className="font-semibold text-[#2c3e50]">{action.title}</p>
+                </div>
+              </Link>
             );
-          }
-          return (
-            <Link key={action.title} to={action.href}>
-              <Card className="hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center h-full">
-                <div className={`w-12 h-12 rounded-lg ${action.color} flex items-center justify-center mb-3`}>
-                  <Icon className="h-6 w-6" />
-                </div>
-                <p className="font-medium text-gray-900">{action.title}</p>
-              </Card>
-            </Link>
-          );
-        })}
-      </div>
+          })}
+        </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Next Appointment</h2>
-          {nextAppointment ? (
-            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-              <p className="font-semibold text-gray-900">{nextAppointment.doctor?.name || 'Doctor'}</p>
-              <p className="text-gray-600">{nextAppointment.reason || 'Appointment'}</p>
-              <div className="mt-2 text-sm font-medium text-blue-600">
-                {new Date(nextAppointment.scheduledAt).toLocaleString()}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+            <h3 className="text-lg font-bold text-[#2c3e50] mb-4">Next Appointment</h3>
+            {nextAppointment ? (
+              <div className="bg-white rounded-xl p-4 border border-gray-200">
+                <p className="font-bold text-[#2c3e50]">{nextAppointment.doctor?.name || 'Doctor'}</p>
+                <p className="text-sm text-gray-500">{nextAppointment.reason || 'Appointment'}</p>
+                <div className="mt-2 text-sm font-bold text-[#1976d2]">
+                  {new Date(nextAppointment.scheduledAt).toLocaleString()}
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="text-center py-6 text-gray-500">
-              <p>No upcoming appointments</p>
-              <button 
-                onClick={() => setShowModal(true)} 
-                className="text-blue-600 font-medium mt-2 inline-block hover:underline focus:outline-none"
-              >
-                Book an appointment
-              </button>
-            </div>
-          )}
-        </Card>
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                <p className="text-sm">No upcoming appointments</p>
+                <button 
+                  onClick={() => setShowModal(true)} 
+                  className="text-[#1976d2] font-bold text-sm mt-2 inline-block hover:underline focus:outline-none"
+                >
+                  Book an appointment
+                </button>
+              </div>
+            )}
+          </div>
 
-        <Card>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Active Prescriptions</h2>
-          {prescriptionsData?.prescriptions?.length > 0 ? (
-            <div className="space-y-3">
-              {prescriptionsData.prescriptions.map((rx) => (
-                <div key={rx.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex justify-between items-center">
-                  <div>
-                    <p className="font-semibold text-gray-900">{rx.medicineName}</p>
-                    <p className="text-sm text-gray-600">{rx.dosage}</p>
+          <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+            <h3 className="text-lg font-bold text-[#2c3e50] mb-4">Active Prescriptions</h3>
+            {prescriptionsData?.prescriptions?.length > 0 ? (
+              <div className="space-y-3">
+                {prescriptionsData.prescriptions.map((rx) => (
+                  <div key={rx.id} className="bg-white rounded-xl p-3 border border-gray-200 flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-[#2c3e50]">{rx.medicineName}</p>
+                      <p className="text-sm text-gray-500">{rx.dosage}</p>
+                    </div>
+                    <span className="text-xs font-bold text-violet-600 bg-violet-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      {rx.frequency}
+                    </span>
                   </div>
-                  <span className="text-sm font-medium text-violet-600 bg-violet-100 px-2 py-1 rounded">
-                    {rx.frequency}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-6 text-gray-500">
-              <p>No active prescriptions</p>
-            </div>
-          )}
-        </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                <p className="text-sm">No active prescriptions</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">Book New Appointment</h2>
+          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4 text-[#2c3e50]">Book New Appointment</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Doctor</label>
                 <select
                   {...register('doctorId')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
                 >
                   <option value="">Select Doctor</option>
                   {doctorsData?.map(d => (
@@ -230,10 +235,10 @@ export default function PatientDashboard() {
               />
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Visit</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Reason for Visit</label>
                 <textarea
                   {...register('reason')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
                   rows="3"
                 ></textarea>
                 {errors.reason && <p className="text-red-500 text-sm mt-1">{errors.reason.message}</p>}
@@ -243,12 +248,12 @@ export default function PatientDashboard() {
                 <Button type="button" variant="outline" className="flex-1" onClick={() => setShowModal(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1" isLoading={isSubmitting}>
+                <Button type="submit" className="flex-1 bg-[#1976d2] hover:bg-[#1565c0]" isLoading={isSubmitting}>
                   Book
                 </Button>
               </div>
             </form>
-          </Card>
+          </div>
         </div>
       )}
     </div>
