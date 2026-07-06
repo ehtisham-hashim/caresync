@@ -2,8 +2,14 @@ import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import PatientLayout from '../components/layouts/PatientLayout';
 import DoctorLayout from '../components/layouts/DoctorLayout';
+import AdminLayout from '../components/layouts/AdminLayout';
 import Navbar from '../components/layouts/Navbar';
 
+// Admin Pages
+import AdminDashboard from '../pages/admin/AdminDashboard';
+import AdminUsersList from '../pages/admin/AdminUsersList';
+import AdminDoctorAssignments from '../pages/admin/AdminDoctorAssignments';
+import AdminAuditLogs from '../pages/admin/AdminAuditLogs';
 // Patient Pages
 import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
@@ -59,6 +65,17 @@ export default function AppRoutes() {
           <Route path="/provider/visits/:visitId" element={<DoctorVisitsPage />} />
         </Route>
       </Route>
+
+      {/* Admin Routes */}
+      <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsersList />} />
+          <Route path="/admin/assignments" element={<AdminDoctorAssignments />} />
+          <Route path="/admin/logs" element={<AdminAuditLogs />} />
+        </Route>
+      </Route>
+
       
       {/* Fallback */}
       <Route path="*" element={<div className="min-h-screen flex items-center justify-center bg-gray-50"><h1 className="text-3xl font-bold text-gray-800">404 - Page Not Found</h1></div>} />

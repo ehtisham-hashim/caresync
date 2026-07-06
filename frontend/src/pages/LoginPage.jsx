@@ -33,7 +33,11 @@ export default function LoginPage() {
       if (response.success) {
         toast.success('Login successful!');
         const role = response.data.user.role;
-        navigate(role === 'DOCTOR' ? '/provider/dashboard' : '/dashboard');
+        if (role === 'ADMIN') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate(role === 'DOCTOR' ? '/provider/dashboard' : '/dashboard');
+        }
       } else {
         toast.error(response.message || 'Login failed');
       }

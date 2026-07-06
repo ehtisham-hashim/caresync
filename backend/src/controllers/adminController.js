@@ -62,3 +62,31 @@ export const getAuditLogs = asyncHandler(async (req, res) => {
 
   sendSuccess(res, 200, 'Audit logs fetched.', { logs, total, page, limit });
 });
+
+export const getDoctorsWithPatients = asyncHandler(async (req, res) => {
+  const doctors = await prisma.user.findMany({
+    where: { 
+      role: 'DOCTOR',
+      deletedAt: null
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      doctorProfile: true,
+      patients: {
+        where: { deletedAt: null },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          dateOfBirth: true,
+          bloodGroup: true
+        }
+      }
+    },
+    orderBy: { name: 'asc' }
+  });
+
+  sendSuccess(res, 200, 'Doctors with patients fetched successfully.', { doctors });
+});

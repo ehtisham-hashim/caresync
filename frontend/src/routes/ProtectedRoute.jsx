@@ -19,6 +19,7 @@ export default function ProtectedRoute({ allowedRoles }) {
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     // Redirect to appropriate dashboard based on their role
+    if (user.role === 'ADMIN') return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to={user.role === 'DOCTOR' ? '/provider/dashboard' : '/dashboard'} replace />;
   }
 
