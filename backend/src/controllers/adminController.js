@@ -1,6 +1,20 @@
 import asyncHandler from '../utils/asyncHandler.js';
-import { sendSuccess } from '../utils/apiResponse.js';
+import { sendSuccess, ApiError } from '../utils/apiResponse.js';
+import { ERROR_CODES } from '../../constants/errorCodes.js';
 import prisma from '../config/db.js';
+
+export const validateAdminCredentials = ({ email, password }) => {
+  const expectedEmail = process.env.ADMIN_EMAIL;
+  const expectedPassword = process.env.ADMIN_PASSWORD;
+
+  if (!expectedEmail || !expectedPassword) {
+    throw new ApiError(500, 'Admin credentials are not configured.', ERROR_CODES.INTERNAL_ERROR);
+  }
+
+  if (email !== expectedEmail || password !== expectedPassword) {
+    throw new ApiError(401, 'Invalid admin credentials.', ERROR_CODES.AUTH_401);
+  }
+};
 
 export const getAllUsers = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;

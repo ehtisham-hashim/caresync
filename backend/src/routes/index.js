@@ -8,7 +8,6 @@ import reportRoutes from './reportRoutes.js';
 import appointmentRoutes from './appointmentRoutes.js';
 import prescriptionRoutes from './prescriptionRoutes.js';
 import notificationRoutes from './notificationRoutes.js';
-import adminRoutes from './adminRoutes.js';
 import doctorRoutes from './doctorRoutes.js';
 
 const router = Router();
@@ -23,6 +22,5 @@ router.use('/reports', reportRoutes);
 router.use('/appointments', appointmentRoutes);
 router.use('/prescriptions', prescriptionRoutes);
 router.use('/notifications', notificationRoutes);
-router.use('/admin', adminRoutes);
 
 export default router;

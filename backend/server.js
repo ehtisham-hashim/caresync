@@ -18,6 +18,7 @@ import errorHandler from './src/middlewares/errorHandler.js';
 
 // Routes
 import routes from './src/routes/index.js';
+import adminRoutes from './src/routes/adminRoutes.js';
 
 // Prisma (shared instance from config/db.js — imported by services)
 import prisma from './src/config/db.js';
@@ -28,7 +29,11 @@ const PORT = env.PORT || 3000;
 // ─── Global Middleware ───────────────────────────────────────────────
 app.use(helmet());
 app.use(cors({
-  origin: env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    "http://localhost:5173", 
+    "http://localhost:5175", 
+    env.FRONTEND_URL // Ye bhi rehne dein agar aapne .env mein set kiya hua hai
+  ].filter(Boolean), // Isse koi empty value nahi jayegi
   credentials: true,
 }));
 app.use(express.json());
@@ -52,6 +57,7 @@ app.get('/health', async (req, res) => {
 
 // ─── API Routes (v1) ────────────────────────────────────────────────
 app.use('/api/v1', routes);
+app.use('/api/v1/admin', adminRoutes);
 
 // ─── 404 Handler ─────────────────────────────────────────────────────
 app.use((req, res) => {

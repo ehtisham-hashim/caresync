@@ -23,6 +23,7 @@ import ScribeConsole from '../pages/provider/ScribeConsole';
 import DoctorReports from '../pages/provider/DoctorReports';
 import DoctorCalendar from '../pages/provider/DoctorCalendar';
 import DoctorVisitsPage from '../pages/DoctorVisitsPage';
+import AdminDashboard from '../pages/AdminDashboard';
 
 export default function AppRoutes() {
   return (
@@ -44,6 +45,9 @@ export default function AppRoutes() {
           <Route path="/reports/new" element={<SubmitReportPage />} />
         </Route>
       </Route>
+
+      {/* Admin Routes */}
+      <Route path="/admin" element={<AdminDashboard />} />
 
       {/* Doctor Routes */}
       <Route element={<ProtectedRoute allowedRoles={['DOCTOR']} />}>
